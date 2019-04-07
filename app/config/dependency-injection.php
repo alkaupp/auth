@@ -22,4 +22,7 @@ return [
         ),
     \Auth\Configuration\EnvironmentConfiguration::class => create(\Auth\Configuration\EnvironmentConfiguration::class)
         ->constructor(__DIR__ . "/../.env"),
+    \Auth\Repository\UserRepository::class => create(\Auth\Repository\InMemoryUserRepository::class),
+    \Auth\Controller\SignInAction::class => create(\Auth\Controller\SignInAction::class)
+        ->constructor(get(\Auth\Repository\UserRepository::class)),
 ];
