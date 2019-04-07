@@ -36,7 +36,7 @@ class SignInAction
             $body = json_decode((string) $request->getBody(), true);
             $signIn = new SignIn($this->userRepository);
             $user = $signIn(trim($body['userName']), trim($body['password']));
-            return new Response(200, ['Content-Type' => 'application/json'], (string) $this->createJwtForUser($user));
+            return new Response(200, [], (string) $this->createJwtForUser($user));
         } catch (AuthenticationException $exception) {
         } catch (NotFoundException $exception) {
             return new Response(401);
