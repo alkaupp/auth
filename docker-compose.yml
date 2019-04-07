@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  php-server:
+    build:
+      context: ./docker
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+  composer:
+    image: composer
+    command: install
+    volumes:
+      - ./app:/var/www/html
+    working_dir: /var/www/html

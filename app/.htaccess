@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s(.*?/+)index\.php(?:/(.*))?[\s?] [NC]
+RewriteRule ^ %1%2 [L,R]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule !^index\.php index\.php%{REQUEST_URI} [L,NC]
