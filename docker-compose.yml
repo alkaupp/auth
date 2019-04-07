@@ -2,6 +2,7 @@ version: '3'
 
 services:
   php-server:
+    container_name: auth-php-server
     build:
       context: ./docker
     ports:
@@ -10,6 +11,7 @@ services:
       - ./app:/var/www/html
   composer:
     image: composer
+    container_name: composer
     command: install
     volumes:
       - ./app:/var/www/html
