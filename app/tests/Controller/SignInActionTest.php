@@ -30,7 +30,7 @@ class SignInActionTest extends TestCase
     {
         $action = new SignInAction($this->userRepository);
         $body = json_encode(['userName' => 'frank@example.com', 'password' => 'secrets']);
-        $request = new ServerRequest('POST', '/signin', $body);
+        $request = new ServerRequest('POST', '/signin', ['Content-Type' => 'application/json'], (string) $body);
         $response = $action($request);
         $this->assertEquals(401, $response->getStatusCode());
     }

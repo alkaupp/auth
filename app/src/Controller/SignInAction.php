@@ -44,7 +44,7 @@ class SignInAction
     {
         return (new Builder())->setIssuer('https://auth.aleksikauppi.la')
         ->setAudience('https://aleksikauppi.la')
-        ->setId(Uuid::uuid4(), true) // Configures the id (jti claim), replicating as a header item
+        ->setId(Uuid::uuid4()->toString(), true) // Configures the id (jti claim), replicating as a header item
         ->setIssuedAt(time())
         ->setNotBefore(time() + 60)
         ->setExpiration(time() + 3600)
