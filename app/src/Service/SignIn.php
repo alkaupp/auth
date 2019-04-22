@@ -16,6 +16,12 @@ class SignIn
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param string $userName
+     * @param string $password
+     * @return User
+     * @throws \Auth\Repository\NotFoundException
+     */
     public function __invoke(string $userName, string $password): User
     {
         $user = $this->userRepository->getByEmailAddress(new EmailAddress($userName));
