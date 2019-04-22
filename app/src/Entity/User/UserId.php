@@ -14,6 +14,13 @@ class UserId
         $this->value = Uuid::uuid4();
     }
 
+    public static function fromString(string $uuid): UserId
+    {
+        $userId = new self();
+        $userId->value = Uuid::fromString($uuid);
+        return $userId;
+    }
+
     public function __toString(): string
     {
         return $this->value->toString();

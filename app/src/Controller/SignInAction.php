@@ -38,6 +38,7 @@ class SignInAction
             $user = $signIn(trim($body['userName']), trim($body['password']));
             return new Response(200, [], (string) $this->createJwtForUser($user));
         } catch (AuthenticationException $exception) {
+            return new Response(401);
         } catch (NotFoundException $exception) {
             return new Response(401);
         }

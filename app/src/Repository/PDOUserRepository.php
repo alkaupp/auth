@@ -30,7 +30,15 @@ class PDOUserRepository implements UserRepository
      */
     public function getByEmailAddress(EmailAddress $emailAddress): User
     {
-        // TODO: Implement getByEmailAddress() method.
+        $sql = "SELECT * FROM public.user WHERE email=:email;";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(["email" => $emailAddress->__toString()]);
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if (count($result) > 0) {
+            $user = $result[0];
+            return User::fromArray($user);
+        }
+        throw new NotFoundException(sprintf("User not found with email %s", (string) $emailAddress));
     }
 
     public function store(User $user): void

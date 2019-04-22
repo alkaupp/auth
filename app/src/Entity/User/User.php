@@ -43,4 +43,11 @@ final class User
             "password" => $this->password->toHash()
         ];
     }
+
+    public static function fromArray(array $user): self
+    {
+        $newUser = new self(new EmailAddress($user["email"]), BcryptPassword::fromHash($user["password"]));
+        $newUser->userId = UserId::fromString($user["id"]);
+        return $newUser;
+    }
 }

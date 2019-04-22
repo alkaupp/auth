@@ -25,4 +25,11 @@ final class BcryptPassword implements Password
     {
         return $this->password;
     }
+
+    public static function fromHash(string $hash): Password
+    {
+        $password = new self($hash);
+        $password->password = $hash;
+        return $password;
+    }
 }
