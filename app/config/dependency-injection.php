@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 use function DI\create;
 use function DI\get;
-use Auth\Controller\DownloadImageAction;
-use Auth\Storage\FileSystemStorage;
-use Auth\Storage\Storage;
 
 return [
     \League\Route\Strategy\ApplicationStrategy::class => create(\League\Route\Strategy\ApplicationStrategy::class),
@@ -22,7 +19,9 @@ return [
         ),
     \Auth\Configuration\EnvironmentConfiguration::class => create(\Auth\Configuration\EnvironmentConfiguration::class)
         ->constructor(__DIR__ . "/../.env"),
-    \Auth\Repository\UserRepository::class => create(\Auth\Repository\InMemoryUserRepository::class),
+    \Auth\Repository\PDOUserRepository::class => create(\Auth\Repository\PDOUserRepository::class)
+        ->constructor(create(\Auth\Repository\PDOFactory::class)),
+    \Auth\Repository\UserRepository::class => get(\Auth\Repository\PDOUserRepository::class),
     \Auth\Controller\SignInAction::class => create(\Auth\Controller\SignInAction::class)
         ->constructor(get(\Auth\Repository\UserRepository::class)),
     \Auth\Controller\RegisterAction::class => create(\Auth\Controller\RegisterAction::class)

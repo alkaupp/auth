@@ -20,4 +20,9 @@ final class BcryptPassword implements Password
     {
         return password_verify($password, $this->password);
     }
+
+    public function toHash(): string
+    {
+        return $this->password;
+    }
 }

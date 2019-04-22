@@ -34,4 +34,13 @@ final class User
     {
         return $this->emailAddress->equals($user->emailAddress);
     }
+
+    public function toArray(): array
+    {
+        return [
+            "id" => $this->userId->__toString(),
+            "email" => $this->email()->__toString(),
+            "password" => $this->password->toHash()
+        ];
+    }
 }
