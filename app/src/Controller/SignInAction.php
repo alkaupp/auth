@@ -9,6 +9,7 @@ use Auth\Repository\NotFoundException;
 use Auth\Repository\UserRepository;
 use Auth\Service\SignIn;
 use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Token;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -47,12 +48,13 @@ class SignInAction
     private function createJwtForUser(User $user): Token
     {
         return (new Builder())->setIssuer('https://auth.aleksikauppi.la')
-        ->setAudience('https://aleksikauppi.la')
+        ->setAudience($user->application()->site())
         ->setId(Uuid::uuid4()->toString(), true) // Configures the id (jti claim), replicating as a header item
         ->setIssuedAt(time())
         ->setNotBefore(time() + 60)
         ->setExpiration(time() + 3600)
         ->set('userName', (string) $user->email())
+        ->sign(new Sha256(), $user->application()->secret())
         ->getToken();
     }
 }

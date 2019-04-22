@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Auth\Tests\Service;
 
 use Auth\AuthenticationException;
+use Auth\Entity\Application\AppId;
+use Auth\Entity\Application\ClientApplication;
 use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
@@ -34,7 +36,7 @@ class SignInTest extends TestCase
     public function testSignInThrowsAuthenticationException(): void
     {
         $signIn = new SignIn($this->userRepository);
-        $this->userRepository->store(new User(new EmailAddress('frank@example.com'), new BcryptPassword('secrets')));
+        $this->userRepository->store($this->createUser('frank@example.com', 'secrets'));
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Invalid password');
         $signIn('frank@example.com', 'sheecrets');
@@ -43,8 +45,17 @@ class SignInTest extends TestCase
     public function testSignInReturnsUser(): void
     {
         $signIn = new SignIn($this->userRepository);
-        $this->userRepository->store(new User(new EmailAddress('frank@example.com'), new BcryptPassword('secrets')));
+        $this->userRepository->store($this->createUser('frank@example.com', 'secrets'));
         $user = $signIn('frank@example.com', 'secrets');
         $this->assertInstanceOf(User::class, $user);
+    }
+
+    private function createUser(string $email, string $password): User
+    {
+        return new User(
+            new EmailAddress($email),
+            new BcryptPassword($password),
+            new ClientApplication(new AppId(), "blaa", "blaa", "blaa")
+        );
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Auth\Controller;
 
 use Auth\RegisterException;
+use Auth\Repository\ApplicationRepository;
 use Auth\Repository\UserRepository;
 use Auth\Service\Register;
 use Nyholm\Psr7\Response;
@@ -15,9 +16,13 @@ final class RegisterAction
     /** @var UserRepository */
     private $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    /** @var ApplicationRepository */
+    private $appRepository;
+
+    public function __construct(UserRepository $userRepository, ApplicationRepository $appRepository)
     {
         $this->userRepository = $userRepository;
+        $this->appRepository = $appRepository;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
@@ -26,8 +31,9 @@ final class RegisterAction
             $body = json_decode($request->getBody()->__toString(), true);
             $email = $body["userName"];
             $password = $body["password"];
-            $register = new Register($this->userRepository);
-            $register($email, $password);
+            $appId = $body["appId"];
+            $register = new Register($this->userRepository, $this->appRepository);
+            $register($email, $password, $appId);
             return new Response(200);
         } catch (\InvalidArgumentException $exception) {
             return new Response(400);

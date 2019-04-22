@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Auth\Service;
 
+use Auth\Entity\Application\AppId;
 use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
 use Auth\RegisterException;
+use Auth\Repository\ApplicationRepository;
 use Auth\Repository\UserRepository;
 
 class Register
@@ -14,14 +16,19 @@ class Register
     /** @var UserRepository */
     private $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    /** @var ApplicationRepository */
+    private $appRepository;
+
+    public function __construct(UserRepository $userRepository, ApplicationRepository $applicationRepository)
     {
         $this->userRepository = $userRepository;
+        $this->appRepository = $applicationRepository;
     }
 
-    public function __invoke(string $userName, string $password): User
+    public function __invoke(string $userName, string $password, string $appId): User
     {
-        $user = new User(new EmailAddress($userName), new BcryptPassword($password));
+        $app = $this->appRepository->getById(AppId::fromString($appId));
+        $user = new User(new EmailAddress($userName), new BcryptPassword($password), $app);
         if ($this->userRepository->exists($user)) {
             throw new RegisterException("Username is already taken.");
         }
