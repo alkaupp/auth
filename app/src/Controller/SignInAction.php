@@ -53,6 +53,5 @@ class SignInAction
         ->setExpiration(time() + 3600)
         ->set('userName', (string) $user->email())
         ->getToken();
-
     }
 }

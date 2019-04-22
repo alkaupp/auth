@@ -39,7 +39,7 @@ final class InMemoryUserRepository implements UserRepository
         }
     }
 
-    private function exists(User $user): bool
+    public function exists(User $user): bool
     {
         foreach ($this->users as $existingUser) {
             if ($existingUser->equals($user)) {
