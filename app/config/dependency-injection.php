@@ -25,4 +25,6 @@ return [
     \Auth\Repository\UserRepository::class => create(\Auth\Repository\InMemoryUserRepository::class),
     \Auth\Controller\SignInAction::class => create(\Auth\Controller\SignInAction::class)
         ->constructor(get(\Auth\Repository\UserRepository::class)),
+    \Auth\Controller\RegisterAction::class => create(\Auth\Controller\RegisterAction::class)
+        ->constructor(get(\Auth\Repository\UserRepository::class))
 ];
