@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Auth\Entity\Application;
 
-class ClientApplication
+use JsonSerializable;
+
+class ClientApplication implements JsonSerializable
 {
     /** @var AppId */
     private $appId;
@@ -42,5 +44,15 @@ class ClientApplication
     public function equals(ClientApplication $application): bool
     {
         return $this->appId->equals($application->appId);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'appId' => $this->appId->__toString(),
+            'appName' => $this->name,
+            'siteUrl' => $this->site,
+            'secretKey' => $this->secretKey
+        ];
     }
 }
