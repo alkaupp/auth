@@ -1,0 +1,193 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Auth provides authentication services",
+    "version": "1.0.0",
+    "title": "Auth",
+    "termsOfService": "",
+    "contact": {
+      "email": "aleksi.kauppila@gmail.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "auth.aleksikauppi.la",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/signin": {
+      "post": {
+        "tags": [
+          "signin"
+        ],
+        "summary": "Sign in",
+        "description": "Sign in to an application",
+        "operationId": "signIn",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Credentials required for signing in",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignInUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful login"
+          },
+          "401": {
+            "description": "Invalid credentials or user doesn't exist"
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "register"
+        ],
+        "summary": "Register user",
+        "description": "Register a user for an application",
+        "operationId": "register",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Credentials required for signing in",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration"
+          },
+          "400": {
+            "description": "Invalid username (= email address)"
+          },
+          "404": {
+            "description": "No application found"
+          },
+          "409": {
+            "description": "Email address is registered"
+          }
+        }
+      }
+    },
+    "/authorize": {
+      "post": {
+        "tags": [
+          "authorize"
+        ],
+        "summary": "Authorize an application",
+        "description": "Authorize an application to allow signing in",
+        "operationId": "authorize",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Application information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApplicationPost"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration",
+            "schema": {
+              "$ref": "#/definitions/ApplicationResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SignInUser": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterUser": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "appId": {
+          "type": "string"
+        }
+      }
+    },
+    "ApplicationPost": {
+      "type": "object",
+      "properties": {
+        "appName": {
+          "type": "string"
+        },
+        "siteUrl": {
+          "type": "string"
+        },
+        "secretKey": {
+          "type": "string"
+        }
+      }
+    },
+    "ApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string"
+        },
+        "appName": {
+          "type": "string"
+        },
+        "siteUrl": {
+          "type": "string"
+        },
+        "secretKey": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
