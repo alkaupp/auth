@@ -47,7 +47,7 @@ class SignInAction
 
     private function createJwtForUser(User $user): Token
     {
-        return (new Builder())->setIssuer('https://auth.aleksikauppi.la')
+        return (new Builder())->setIssuer(getenv('AUTH_DB_JWT_ISSUER'))
         ->setAudience($user->application()->site())
         ->setId(Uuid::uuid4()->toString(), true) // Configures the id (jti claim), replicating as a header item
         ->setIssuedAt(time())
