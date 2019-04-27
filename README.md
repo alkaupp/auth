@@ -10,11 +10,6 @@ Running the application
 docker-compose up
 ```
 
-Update dependencies
-```
-docker-compose run composer update --ignore-platform-reqs
-```
-
 Usage
 -----
 
@@ -63,8 +58,41 @@ POST /signin
 ```json
 {
   "userName": "me@example.com",
-  "password": "password123",
+  "password": "password123"
 }
 ```
 
 Successful authentication will return a HTTP 200 response accompanied with a JWT-token.
+
+Common development operations
+-----------------------------
+
+Update dependencies
+```
+docker-compose run composer update --ignore-platform-reqs
+```
+
+Add new dependencies
+```
+docker-compose run composer require somevendor/somelib --ignore-platform-reqs
+```
+
+Run tests
+```
+docker exec -it auth-php-server bash -c 'vendor/bin/phpunit'
+```
+
+Run static analysis with phpstan
+```
+docker exec -it auth-php-server bash -c 'vendor/bin/phpstan analyse'
+```
+
+Run code style check
+```
+docker exec -it auth-php-server bash -c 'vendor/bin/phpcs'
+```
+
+Fix code style violations (that can be automatically fixed)
+```
+docker exec -it auth-php-server bash -c 'vendor/bin/phpcbf'
+```
