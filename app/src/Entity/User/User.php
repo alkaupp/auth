@@ -32,7 +32,7 @@ final class User
                 $user['app_name'],
                 $user['app_siteurl'],
                 $user['app_secretkey'],
-                )
+            )
         );
         $newUser->userId = UserId::fromString($user['id']);
         return $newUser;
