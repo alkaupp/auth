@@ -1,7 +1,12 @@
 <?php
 declare(strict_types=1);
 
+use Auth\Controller\AuthorizeAction;
+use Auth\Controller\RegisterAction;
+use Auth\Controller\SignInAction;
+
 return [
-    ["POST", "/signin", \Auth\Controller\SignInAction::class],
-    ["POST", "/register", \Auth\Controller\RegisterAction::class]
+    ["POST", "/authorize", AuthorizeAction::class],
+    ["POST", "/signin", SignInAction::class],
+    ["POST", "/register", RegisterAction::class]
 ];

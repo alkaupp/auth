@@ -1,29 +1,48 @@
 <?php
 declare(strict_types=1);
 
+use Auth\Configuration\EnvironmentConfiguration;
+use Auth\Configuration\RouteConfiguration;
+use Auth\Controller\AuthorizeAction;
+use Auth\Controller\RegisterAction;
+use Auth\Controller\SignInAction;
+use Auth\Repository\ApplicationRepository;
+use Auth\Repository\PDOApplicationRepository;
+use Auth\Repository\PDOFactory;
+use Auth\Repository\PDOUserRepository;
+use Auth\Repository\UserRepository;
 use function DI\create;
 use function DI\get;
+use League\Route\Router;
+use League\Route\Strategy\ApplicationStrategy;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
+use Nyholm\Psr7Server\ServerRequestCreatorInterface;
 
 return [
-    \League\Route\Strategy\ApplicationStrategy::class => create(\League\Route\Strategy\ApplicationStrategy::class),
-    \League\Route\Router::class => create(\League\Route\Router::class)
-        ->method('setStrategy', get(\League\Route\Strategy\ApplicationStrategy::class)),
-    \Auth\Configuration\RouteConfiguration::class => create(\Auth\Configuration\RouteConfiguration::class)
-        ->constructor(__DIR__ . '/routes.php', get(\League\Route\Router::class)),
-    \Nyholm\Psr7Server\ServerRequestCreatorInterface::class => create(\Nyholm\Psr7Server\ServerRequestCreator::class)
+    ApplicationStrategy::class => create(ApplicationStrategy::class),
+    Router::class => create(Router::class)
+        ->method('setStrategy', get(ApplicationStrategy::class)),
+    RouteConfiguration::class => create(RouteConfiguration::class)
+        ->constructor(__DIR__ . '/routes.php', get(Router::class)),
+    ServerRequestCreatorInterface::class => create(ServerRequestCreator::class)
         ->constructor(
-            new \Nyholm\Psr7\Factory\Psr17Factory(),
-            new \Nyholm\Psr7\Factory\Psr17Factory(),
-            new \Nyholm\Psr7\Factory\Psr17Factory(),
-            new \Nyholm\Psr7\Factory\Psr17Factory()
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory()
         ),
-    \Auth\Configuration\EnvironmentConfiguration::class => create(\Auth\Configuration\EnvironmentConfiguration::class)
+    EnvironmentConfiguration::class => create(EnvironmentConfiguration::class)
         ->constructor(__DIR__ . "/../.env"),
-    \Auth\Repository\PDOUserRepository::class => create(\Auth\Repository\PDOUserRepository::class)
-        ->constructor(create(\Auth\Repository\PDOFactory::class)),
-    \Auth\Repository\UserRepository::class => get(\Auth\Repository\PDOUserRepository::class),
-    \Auth\Controller\SignInAction::class => create(\Auth\Controller\SignInAction::class)
-        ->constructor(get(\Auth\Repository\UserRepository::class)),
-    \Auth\Controller\RegisterAction::class => create(\Auth\Controller\RegisterAction::class)
-        ->constructor(get(\Auth\Repository\UserRepository::class))
+    ApplicationRepository::class => create(PDOApplicationRepository::class)
+        ->constructor(create(PDOFactory::class)),
+    PDOUserRepository::class => create(PDOUserRepository::class)
+        ->constructor(create(PDOFactory::class)),
+    UserRepository::class => get(PDOUserRepository::class),
+    AuthorizeAction::class => create(AuthorizeAction::class)
+        ->constructor(get(ApplicationRepository::class)),
+    SignInAction::class => create(SignInAction::class)
+        ->constructor(get(UserRepository::class)),
+    RegisterAction::class => create(RegisterAction::class)
+        ->constructor(get(UserRepository::class), get(ApplicationRepository::class))
 ];

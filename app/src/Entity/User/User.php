@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Auth\Entity\User;
 
 use Auth\AuthenticationException;
+use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\ClientApplication;
 
 final class User
@@ -24,11 +25,16 @@ final class User
     public static function fromArray(array $user): self
     {
         $newUser = new self(
-        new EmailAddress($user["email"]),
-            BcryptPassword::fromHash($user["password"]),
-            $user["application"]
+            new EmailAddress($user['email']),
+            BcryptPassword::fromHash($user['password']),
+            new ClientApplication(
+                AppId::fromString($user['app_id']),
+                $user['app_name'],
+                $user['app_siteurl'],
+                $user['app_secretkey'],
+                )
         );
-        $newUser->userId = UserId::fromString($user["id"]);
+        $newUser->userId = UserId::fromString($user['id']);
         return $newUser;
     }
 
@@ -45,7 +51,7 @@ final class User
     public function authenticate(string $password): void
     {
         if (!$this->password->matches($password)) {
-            throw new AuthenticationException("Invalid password");
+            throw new AuthenticationException('Invalid password');
         }
     }
 
@@ -57,9 +63,10 @@ final class User
     public function toArray(): array
     {
         return [
-            "id" => $this->userId->__toString(),
-            "email" => $this->email()->__toString(),
-            "password" => $this->password->toHash()
+            'id' => $this->userId->__toString(),
+            'email' => $this->email()->__toString(),
+            'password' => $this->password->toHash(),
+            'appId' => $this->application->appId()->__toString()
         ];
     }
 }

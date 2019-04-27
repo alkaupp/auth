@@ -30,29 +30,38 @@ class PDOUserRepository implements UserRepository
      */
     public function getByEmailAddress(EmailAddress $emailAddress): User
     {
-        $sql = "SELECT * FROM public.user WHERE email=:email;";
+        $sql = <<<SQL
+SELECT "user".*,
+       application.id as app_id,
+       application.name as app_name,
+       application.site as app_siteurl,
+       application.secretkey as app_secretkey
+FROM "user"
+    JOIN application ON "user".app_id = application.id
+WHERE email=:email;
+SQL;
         $statement = $this->pdo->prepare($sql);
-        $statement->execute(["email" => $emailAddress->__toString()]);
+        $statement->execute(['email' => $emailAddress->__toString()]);
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (count($result) > 0) {
             $user = $result[0];
             return User::fromArray($user);
         }
-        throw new NotFoundException(sprintf("User not found with email %s", (string) $emailAddress));
+        throw new NotFoundException(sprintf('User not found with email %s', (string) $emailAddress));
     }
 
     public function store(User $user): void
     {
-        $sql = "INSERT INTO public.user (id, email, password) VALUES(:id, :email, :password);";
+        $sql = 'INSERT INTO "user" (id, email, password, app_id) VALUES(:id, :email, :password, :appId);';
         $statement = $this->pdo->prepare($sql);
         $statement->execute($user->toArray());
     }
 
     public function exists(User $user): bool
     {
-        $sql = "SELECT * FROM public.user WHERE email=:email;";
+        $sql = 'SELECT * FROM "user" WHERE email=:email;';
         $statement = $this->pdo->prepare($sql);
-        $statement->execute(["email" => $user->email()->__toString()]);
+        $statement->execute(['email' => $user->email()->__toString()]);
         return $statement->rowCount() > 0;
     }
 }

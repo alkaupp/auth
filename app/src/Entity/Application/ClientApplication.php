@@ -46,6 +46,16 @@ class ClientApplication implements JsonSerializable
         return $this->appId->equals($application->appId);
     }
 
+    public static function fromArray(array $application): self
+    {
+        return new self(
+            AppId::fromString($application['id']),
+            $application['name'],
+            $application['site'],
+            $application['secretkey']
+        );
+    }
+
     public function jsonSerialize(): array
     {
         return [
