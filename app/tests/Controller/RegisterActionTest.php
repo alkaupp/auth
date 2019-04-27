@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 class RegisterActionTest extends TestCase
 {
     private const APP_ID = '54036de4-652a-11e9-8888-c5d1c66dcec3';
+    private const INVALID_APP_ID = '54036de4-652a-11e9-8888-c5d1c66dcec4';
 
     public function registerDataProvider(): array
     {
@@ -36,6 +37,7 @@ class RegisterActionTest extends TestCase
         return [
             [$repository, $this->getRequestBody($email, $password, self::APP_ID), 200],
             [$repository, $this->getRequestBody($invalidEmail, $password, self::APP_ID), 400],
+            [$repository, $this->getRequestBody($email, $password, self::INVALID_APP_ID), 404],
             [$repository, $this->getRequestBody($usedEmail, $password, self::APP_ID), 409]
         ];
     }

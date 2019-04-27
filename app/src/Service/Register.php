@@ -9,6 +9,7 @@ use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
 use Auth\RegisterException;
 use Auth\Repository\ApplicationRepository;
+use Auth\Repository\NotFoundException;
 use Auth\Repository\UserRepository;
 
 class Register
@@ -25,6 +26,13 @@ class Register
         $this->appRepository = $applicationRepository;
     }
 
+    /**
+     * @param string $userName
+     * @param string $password
+     * @param string $appId
+     * @return User
+     * @throws NotFoundException
+     */
     public function __invoke(string $userName, string $password, string $appId): User
     {
         $app = $this->appRepository->getById(AppId::fromString($appId));

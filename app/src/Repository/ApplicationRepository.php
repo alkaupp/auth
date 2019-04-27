@@ -8,6 +8,11 @@ use Auth\Entity\Application\ClientApplication;
 
 interface ApplicationRepository
 {
+    /**
+     * @param AppId $appId
+     * @return ClientApplication
+     * @throws NotFoundException
+     */
     public function getById(AppId $appId): ClientApplication;
     public function store(ClientApplication $application): void;
 }

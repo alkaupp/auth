@@ -5,6 +5,7 @@ namespace Auth\Controller;
 
 use Auth\RegisterException;
 use Auth\Repository\ApplicationRepository;
+use Auth\Repository\NotFoundException;
 use Auth\Repository\UserRepository;
 use Auth\Service\Register;
 use Nyholm\Psr7\Response;
@@ -37,6 +38,8 @@ final class RegisterAction
             return new Response(200);
         } catch (\InvalidArgumentException $exception) {
             return new Response(400);
+        } catch (NotFoundException $exception) {
+            return new Response(404);
         } catch (RegisterException $exception) {
             return new Response(409);
         }
