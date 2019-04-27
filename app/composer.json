@@ -16,9 +16,11 @@
         "ramsey/uuid": "^3.8",
         "symfony/dotenv": "^4.2",
         "phpstan/phpstan-phpunit": "^0.11.0",
-        "lcobucci/jwt": "^3.2"
+        "lcobucci/jwt": "^3.2",
+        "ext-json": "*"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-master",
         "phpunit/phpunit": "^7.5",
         "phpstan/phpstan": "~0.10"
     },
