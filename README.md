@@ -86,7 +86,7 @@ docker exec -it auth-php-server bash -c 'vendor/bin/phpunit'
 
 Run static analysis with phpstan
 ```
-docker exec -it auth-php-server bash -c 'vendor/bin/phpstan analyse'
+docker exec -it auth-php-server bash -c 'vendor/bin/phpstan analyse -l 5'
 ```
 
 Run code style check

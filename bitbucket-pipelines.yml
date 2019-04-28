@@ -9,5 +9,5 @@ pipelines:
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - composer install
           - vendor/bin/phpunit
-          - vendor/bin/phpstan analyse
+          - vendor/bin/phpstan analyse -l 5
           - vendor/bin/phpcs
