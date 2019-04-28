@@ -64,6 +64,8 @@ POST /signin
 
 Successful authentication will return a HTTP 200 response accompanied with a JWT-token.
 
+**NOTE**: Api documentation can be found in http://localhost:8000
+
 Common development operations
 -----------------------------
 
