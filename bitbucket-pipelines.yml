@@ -1,0 +1,13 @@
+image: php:7.3
+pipelines:
+  default:
+    - step:
+        name: Build and run tests, static analysis and code style check
+        script:
+          - apt-get update && apt-get install -y unzip git
+          - cd app
+          - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - composer install
+          - vendor/bin/phpunit
+          - vendor/bin/phpstan analyse
+          - vendor/bin/phpcs
