@@ -25,4 +25,9 @@ class UserId
     {
         return $this->value->toString();
     }
+
+    public function equals(UserId $userId): bool
+    {
+        return $this->value->equals($userId->value);
+    }
 }

@@ -9,6 +9,11 @@ use Auth\Entity\User\User;
 
 interface UserRepository
 {
+    /**
+     * @param UserId $userId
+     * @return User
+     * @throws NotFoundException
+     */
     public function getById(UserId $userId): User;
 
     /**

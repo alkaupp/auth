@@ -38,6 +38,11 @@ final class User
         return $newUser;
     }
 
+    public function userId(): UserId
+    {
+        return $this->userId;
+    }
+
     public function email(): EmailAddress
     {
         return $this->emailAddress;

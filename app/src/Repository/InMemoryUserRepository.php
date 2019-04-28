@@ -19,7 +19,13 @@ final class InMemoryUserRepository implements UserRepository
 
     public function getById(UserId $userId): User
     {
-        // TODO: Implement getById() method.
+        /** @var User $user */
+        foreach ($this->users as $user) {
+            if ($user->userId()->equals($userId)) {
+                return $user;
+            }
+        }
+        throw new NotFoundException(sprintf('User not found with id %s', $userId));
     }
 
     public function getByEmailAddress(EmailAddress $emailAddress): User
