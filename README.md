@@ -13,7 +13,7 @@ docker-compose up
 Usage
 -----
 
-First authorize, so "Auth" can provide authentication services for your application.
+First authorize your application, so "Auth" can start providing authentication services for your application.
 
 POST /authorize
 
@@ -26,7 +26,7 @@ POST /authorize
 ```
 
 In response you will receive an `appId` for your application that your users will have to
-provide when registering to your site. The response will look like this (obviously uuid will be different):
+provide when registering from your site. The response will look like this (obviously uuid will be different):
 
 ```json
 {
@@ -51,7 +51,7 @@ POST /register
 
 Successful registration will return a plain HTTP 200 response.
 
-After registration users can sign in through "Auth" application.
+After registration, users can sign in through "Auth" application.
 
 POST /signin
 
