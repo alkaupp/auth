@@ -3,3 +3,4 @@ app/vendor
 app/storage/*
 !app/storage/.gitkeep
 app/.env
+app/coverage
