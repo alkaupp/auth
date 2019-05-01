@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+use Auth\Configuration\AppConfiguration;
+use Auth\Repository\ApplicationRepository;
+use Auth\Service\Authorize;
+use DI\ContainerBuilder;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$containerBuilder = new ContainerBuilder();
+$containerBuilder->addDefinitions(__DIR__ . '/../config/dependency-injection.php');
+$container = $containerBuilder->build();
+$configuration = new AppConfiguration($container);
+$configuration->configure();
+$useCase = new Authorize($container->get(ApplicationRepository::class));
+
+[$script, $name, $siteUrl, $secretKey] = $_SERVER['argv'];
+$app = $useCase($name, $siteUrl, $secretKey);
+echo json_encode($app) . "\n";
+
