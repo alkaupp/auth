@@ -29,9 +29,17 @@ class HttpApplication
         try {
             $response = $this->router->dispatch($this->requestCreator->fromGlobals());
         } catch (NotFoundException $e) {
-            $response = new Response(404, ["Content-Type" => "application/json"], json_encode(["status" => 404, "error" => $e->getMessage()]));
+            $response = new Response(
+                404,
+                ["Content-Type" => "application/json"],
+                json_encode(["status" => 404, "error" => $e->getMessage()])
+            );
         } catch (Exception $e) {
-            $response = new Response(500, ["Content-Type" => "application/json"], json_encode(["status" => 500, "error" => $e->getMessage()]));
+            $response = new Response(
+                500,
+                ["Content-Type" => "application/json"],
+                json_encode(["status" => 500, "error" => $e->getMessage()])
+            );
         }
         (new RequestSender())->send($response);
     }
