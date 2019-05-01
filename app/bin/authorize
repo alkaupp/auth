@@ -3,21 +3,50 @@
 
 declare(strict_types=1);
 
-use Auth\Configuration\AppConfiguration;
+use Auth\Application\ApplicationFactory;
 use Auth\Repository\ApplicationRepository;
 use Auth\Service\Authorize;
 use DI\ContainerBuilder;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+class AuthorizeCommand extends Command
+{
+    private $repository;
+
+    public function __construct(ApplicationRepository $repository)
+    {
+        $this->repository = $repository;
+        parent::__construct('authorize');
+    }
+
+    protected function configure(): void
+    {
+        $this->setDescription('Authorize auth-app to allow registering and signing in to your application');
+        $this->addArgument('appName', InputArgument::REQUIRED, "Application's name");
+        $this->addArgument('siteUrl', InputArgument::REQUIRED, 'Url for app');
+        $this->addArgument('secretKey', InputArgument::REQUIRED, 'Secret key used to sign tokens');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): void
+    {
+        try {
+            $useCase = new Authorize($this->repository);
+            [$name, $siteUrl, $secretKey] = array_values($input->getArguments());
+            $app = $useCase($name, $siteUrl, $secretKey);
+            $output->writeln(json_encode($app));
+        } catch (Throwable $throwable) {
+            $output->writeln(sprintf('<error>Command failed: %s</error>', $throwable->getMessage()));
+        }
+    }
+}
 
 $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions(__DIR__ . '/../config/dependency-injection.php');
 $container = $containerBuilder->build();
-$configuration = new AppConfiguration($container);
-$configuration->configure();
-$useCase = new Authorize($container->get(ApplicationRepository::class));
-
-[$script, $name, $siteUrl, $secretKey] = $_SERVER['argv'];
-$app = $useCase($name, $siteUrl, $secretKey);
-echo json_encode($app) . "\n";
-
+$app = (new ApplicationFactory($container))->createConsoleApplication();
+$app->run(new AuthorizeCommand($container->get(ApplicationRepository::class)));
