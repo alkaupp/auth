@@ -1,0 +1,59 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Auth\Application\ApplicationFactory;
+use Auth\RegisterException;
+use Auth\Repository\ApplicationRepository;
+use Auth\Repository\NotFoundException;
+use Auth\Repository\UserRepository;
+use Auth\Service\Register;
+use DI\ContainerBuilder;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+class RegisterCommand extends Command
+{
+    private $userRepository;
+    private $appRepository;
+
+    public function __construct(UserRepository $userRepository, ApplicationRepository $appRepository)
+    {
+        $this->userRepository = $userRepository;
+        $this->appRepository = $appRepository;
+        parent::__construct('register');
+    }
+
+    protected function configure(): void
+    {
+        $this->setDescription('Register user for an application');
+        $this->addArgument('username', InputArgument::REQUIRED);
+        $this->addArgument('password', InputArgument::REQUIRED);
+        $this->addArgument('appId', InputArgument::REQUIRED);
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): void
+    {
+        try {
+            $useCase = new Register($this->userRepository, $this->appRepository);
+            [$username, $password, $appId] = array_values($input->getArguments());
+            $useCase($username, $password, $appId);
+            $output->writeln('User succesfully registered.');
+        } catch (NotFoundException $exception) {
+            $output->writeln('<error>Application was not found. Check appId.</error>');
+        } catch (RegisterException $exception) {
+            $output->writeln('<error>Email address is already in use.</error>');
+        }
+    }
+}
+
+$containerBuilder = new ContainerBuilder();
+$containerBuilder->addDefinitions(__DIR__ . '/../config/dependency-injection.php');
+$container = $containerBuilder->build();
+$app = (new ApplicationFactory($container))->createConsoleApplication();
+$app->run(new RegisterCommand($container->get(UserRepository::class), $container->get(ApplicationRepository::class)));
