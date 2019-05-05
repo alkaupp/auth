@@ -73,7 +73,9 @@ class PDOUserRepository implements UserRepository
     {
         $userArray = $user->toArray();
         foreach ($userArray['applications'] as $application) {
-            $sql = 'INSERT INTO user_applications (user_id, application_id) VALUES (:userId, :appId);';
+            $sql = <<<SQL
+INSERT INTO user_applications (user_id, application_id) VALUES (:userId, :appId) ON CONFLICT DO NOTHING;
+SQL;
             $statement = $this->pdo->prepare($sql);
             $statement->execute(['userId' => (string) $user->userId(), 'appId' => $application['appId']]);
         }
