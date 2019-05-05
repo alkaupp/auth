@@ -37,5 +37,11 @@ class Applications implements IteratorAggregate, JsonSerializable
 
     public function jsonSerialize(): array
     {
+        return array_map(
+            function (ClientApplication $application): array {
+                return $application->jsonSerialize();
+            },
+            $this->applications
+        );
     }
 }

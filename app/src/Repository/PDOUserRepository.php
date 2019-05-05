@@ -7,6 +7,7 @@ use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
 use Auth\Entity\User\UserId;
 use PDO;
+use PDOException;
 
 class PDOUserRepository implements UserRepository
 {
@@ -48,9 +49,34 @@ class PDOUserRepository implements UserRepository
 
     public function store(User $user): void
     {
-        $sql = 'INSERT INTO "user" (id, email, password, app_id) VALUES(:id, :email, :password, :appId);';
+        try {
+            $this->pdo->beginTransaction();
+            $this->storeUser($user);
+            $this->createUserApplicationMaps($user);
+            $this->pdo->commit();
+        } catch (PDOException $exception) {
+            $this->pdo->rollBack();
+            throw new PersistingException($exception->getMessage(), $exception->getCode(), $exception);
+        }
+    }
+
+    private function storeUser(User $user): void
+    {
+        $sql = 'INSERT INTO "user" (id, email, password) VALUES(:id, :email, :password);';
         $statement = $this->pdo->prepare($sql);
-        $statement->execute($user->toArray());
+        $userArray = $user->toArray();
+        unset($userArray['applications']);
+        $statement->execute($userArray);
+    }
+
+    private function createUserApplicationMaps(User $user): void
+    {
+        $userArray = $user->toArray();
+        foreach ($userArray['applications'] as $application) {
+            $sql = 'INSERT INTO user_applications (user_id, application_id) VALUES (:userId, :appId);';
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute(['userId' => (string) $user->userId(), 'appId' => $application['appId']]);
+        }
     }
 
     public function exists(User $user): bool
@@ -69,23 +95,32 @@ class PDOUserRepository implements UserRepository
      */
     private function getWhere(string $whereClause, array $parameters): User
     {
-        $sql = <<<SQL
-SELECT "user".*,
-       application.id as app_id,
-       application.name as app_name,
-       application.site as app_siteurl,
-       application.secretkey as app_secretkey
-FROM "user"
-    JOIN application ON "user".app_id = application.id
-SQL;
+        $sql = 'SELECT * FROM "user"';
         $sql .= sprintf(' WHERE %s;', $whereClause);
         $statement = $this->pdo->prepare($sql);
         $statement->execute($parameters);
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (count($result) > 0) {
             $user = $result[0];
+            $user['applications'] = $this->getApplicationsFor(UserId::fromString($user['id']));
             return User::fromArray($user);
         }
         throw new NotFoundException('User not found with');
+    }
+
+    private function getApplicationsFor(UserId $userId): array
+    {
+        $sql = <<<SQL
+SELECT application.id as app_id,
+   application.name as app_name,
+   application.site as app_siteurl,
+   application.secretkey as app_secretkey
+FROM application
+   JOIN user_applications ON user_applications.application_id = application.id
+   WHERE user_applications.user_id = :userId;
+SQL;
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(['userId' => $userId->__toString()]);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

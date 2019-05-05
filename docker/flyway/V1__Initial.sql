@@ -8,7 +8,11 @@ CREATE TABLE "user" (
     id CHAR(36) PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    app_id CHAR(36) NOT NULL,
-    UNIQUE (email),
-    CONSTRAINT user_appId FOREIGN KEY (app_id) REFERENCES application (id)
+    UNIQUE (email)
+);
+CREATE TABLE user_applications (
+    user_id CHAR(36) NOT NULL,
+    application_id CHAR(36) NOT NULL,
+    CONSTRAINT user_applications_user_id FOREIGN KEY (user_id) REFERENCES "user" (id),
+    CONSTRAINT user_applications_application_id FOREIGN KEY (application_id) REFERENCES application (id)
 );

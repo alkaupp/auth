@@ -42,7 +42,7 @@ return [
     AuthorizeAction::class => create(AuthorizeAction::class)
         ->constructor(get(ApplicationRepository::class)),
     SignInAction::class => create(SignInAction::class)
-        ->constructor(get(UserRepository::class)),
+        ->constructor(get(UserRepository::class), get(ApplicationRepository::class)),
     RegisterAction::class => create(RegisterAction::class)
         ->constructor(get(UserRepository::class), get(ApplicationRepository::class))
 ];

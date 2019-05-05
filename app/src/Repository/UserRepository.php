@@ -22,6 +22,11 @@ interface UserRepository
      * @throws NotFoundException
      */
     public function getByEmailAddress(EmailAddress $emailAddress): User;
+
+    /**
+     * @param User $user
+     * @throws PersistingException
+     */
     public function store(User $user): void;
     public function exists(User $user): bool;
 }

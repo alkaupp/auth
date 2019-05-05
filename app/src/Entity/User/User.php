@@ -36,7 +36,7 @@ final class User
                     $application['app_secretkey'],
                 );
             },
-            $user['application']
+            $user['applications']
         );
         $newUser = new self(
             new EmailAddress($user['email']),

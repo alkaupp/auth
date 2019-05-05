@@ -141,6 +141,9 @@
         },
         "password": {
           "type": "string"
+        },
+        "appId": {
+          "type": "string"
         }
       }
     },
