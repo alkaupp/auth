@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace Auth\Entity\Application;
 
+use Auth\Entity\User\User;
 use JsonSerializable;
+use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Ramsey\Uuid\Uuid;
 
 class ClientApplication implements JsonSerializable
 {
@@ -31,16 +35,6 @@ class ClientApplication implements JsonSerializable
         return $this->name;
     }
 
-    public function site(): string
-    {
-        return $this->site;
-    }
-
-    public function secret(): string
-    {
-        return $this->secretKey;
-    }
-
     public function equals(ClientApplication $application): bool
     {
         return $this->appId->equals($application->appId);
@@ -64,5 +58,20 @@ class ClientApplication implements JsonSerializable
             'siteUrl' => $this->site,
             'secretKey' => $this->secretKey
         ];
+    }
+
+    public function createTokenFor(User $user): AuthenticationToken
+    {
+        return new JwtToken(
+            (new Builder())->setIssuer(getenv('AUTH_DB_JWT_ISSUER'))
+            ->setAudience($this->site)
+            ->setId(Uuid::uuid4()->toString(), true) // Configures the id (jti claim), replicating as a header item
+            ->setIssuedAt(time())
+            ->setNotBefore(time() + 60)
+            ->setExpiration(time() + 3600)
+            ->set('userName', (string) $user->email())
+            ->sign(new Sha256(), $this->secretKey)
+            ->getToken()
+        );
     }
 }

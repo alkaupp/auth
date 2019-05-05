@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Auth\Controller;
 
 use Auth\AuthenticationException;
+use Auth\AuthorizationException;
 use Auth\Entity\User\User;
+use Auth\Repository\ApplicationRepository;
 use Auth\Repository\NotFoundException;
 use Auth\Repository\UserRepository;
 use Auth\Service\SignIn;
@@ -26,35 +28,28 @@ class SignInAction
     /** @var UserRepository */
     private $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    /** @var ApplicationRepository */
+    private $appRepository;
+
+    public function __construct(UserRepository $userRepository, ApplicationRepository $appRepository)
     {
         $this->userRepository = $userRepository;
+        $this->appRepository = $appRepository;
     }
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         try {
             $body = json_decode((string) $request->getBody(), true);
-            $signIn = new SignIn($this->userRepository);
-            $user = $signIn(trim($body['userName']), trim($body['password']));
-            return new Response(200, [], (string) $this->createJwtForUser($user));
+            $signIn = new SignIn($this->userRepository, $this->appRepository);
+            $token = $signIn(trim($body['userName']), trim($body['password']), $body['appId']);
+            return new Response(200, [], $token->toStringValue());
         } catch (AuthenticationException $exception) {
+            return new Response(401);
+        } catch (AuthorizationException $exception) {
             return new Response(401);
         } catch (NotFoundException $exception) {
             return new Response(401);
         }
-    }
-
-    private function createJwtForUser(User $user): Token
-    {
-        return (new Builder())->setIssuer(getenv('AUTH_DB_JWT_ISSUER'))
-        ->setAudience($user->application()->site())
-        ->setId(Uuid::uuid4()->toString(), true) // Configures the id (jti claim), replicating as a header item
-        ->setIssuedAt(time())
-        ->setNotBefore(time() + 60)
-        ->setExpiration(time() + 3600)
-        ->set('userName', (string) $user->email())
-        ->sign(new Sha256(), $user->application()->secret())
-        ->getToken();
     }
 }

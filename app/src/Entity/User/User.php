@@ -5,34 +5,42 @@ namespace Auth\Entity\User;
 
 use Auth\AuthenticationException;
 use Auth\Entity\Application\AppId;
+use Auth\Entity\Application\AuthenticationToken;
 use Auth\Entity\Application\ClientApplication;
+use Auth\AuthorizationException;
 
 final class User
 {
     private $userId;
     private $emailAddress;
     private $password;
-    private $application;
+    private $applications;
 
-    public function __construct(EmailAddress $emailAddress, Password $password, ClientApplication $application)
+    public function __construct(EmailAddress $emailAddress, Password $password, array $applications)
     {
         $this->userId = new UserId();
         $this->emailAddress = $emailAddress;
         $this->password = $password;
-        $this->application = $application;
+        $this->applications = $applications;
     }
 
     public static function fromArray(array $user): self
     {
+        $applications = array_map(
+            function (array $application): ClientApplication {
+                return new ClientApplication(
+                    AppId::fromString($application['app_id']),
+                    $application['app_name'],
+                    $application['app_siteurl'],
+                    $application['app_secretkey'],
+                );
+            },
+            $user['application']
+        );
         $newUser = new self(
             new EmailAddress($user['email']),
             BcryptPassword::fromHash($user['password']),
-            new ClientApplication(
-                AppId::fromString($user['app_id']),
-                $user['app_name'],
-                $user['app_siteurl'],
-                $user['app_secretkey'],
-            )
+            $applications
         );
         $newUser->userId = UserId::fromString($user['id']);
         return $newUser;
@@ -48,9 +56,19 @@ final class User
         return $this->emailAddress;
     }
 
-    public function application(): ClientApplication
+    /**
+     * @param ClientApplication $clientApp
+     * @param string $password
+     * @return AuthenticationToken
+     * @throws AuthorizationException
+     */
+    public function authenticateTo(ClientApplication $clientApp, string $password): AuthenticationToken
     {
-        return $this->application;
+        $this->authenticate($password);
+        if (!$this->hasApplication($clientApp)) {
+            throw new AuthorizationException(sprintf('User is not a user of application %s', $clientApp->name()));
+        }
+        return $clientApp->createTokenFor($this);
     }
 
     public function authenticate(string $password): void
@@ -71,7 +89,20 @@ final class User
             'id' => $this->userId->__toString(),
             'email' => $this->email()->__toString(),
             'password' => $this->password->toHash(),
-            'appId' => $this->application->appId()->__toString()
+            // @fixme for multiple applications
+            //'appId' => $this->application->appId()->__toString()
+            'applications' => []
         ];
+    }
+
+    private function hasApplication(ClientApplication $clientApp): bool
+    {
+        /** @var ClientApplication $application */
+        foreach ($this->applications as $application) {
+            if ($application->equals($clientApp)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

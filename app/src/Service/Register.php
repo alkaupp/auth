@@ -37,7 +37,7 @@ class Register
     public function __invoke(string $userName, string $password, string $appId): User
     {
         $app = $this->appRepository->getById(AppId::fromString($appId));
-        $user = new User(new EmailAddress($userName), new BcryptPassword($password), $app);
+        $user = new User(new EmailAddress($userName), new BcryptPassword($password), [$app]);
         if ($this->userRepository->exists($user)) {
             throw new RegisterException('Username is already taken.');
         }

@@ -9,6 +9,8 @@ use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\Application\ClientApplication;
 use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
+use Auth\Repository\ApplicationRepository;
+use Auth\Repository\InMemoryApplicationRepository;
 use Auth\Repository\InMemoryUserRepository;
 use Auth\Repository\UserRepository;
 use Lcobucci\JWT\Parser;
@@ -22,18 +24,34 @@ use Psr\Http\Message\ResponseInterface;
 class SignInActionTest extends TestCase
 {
     private const APP_SECRET = '53CR37';
+
     /** @var UserRepository */
     private $userRepository;
+
+    /** @var ApplicationRepository */
+    private $appRepository;
+
+    /** @var ClientApplication */
+    private $app;
 
     protected function setUp()
     {
         $this->userRepository = new InMemoryUserRepository();
+        $this->app = new ClientApplication(new AppId(), 'app', 'https://example.com', self::APP_SECRET);
+        $this->appRepository = new InMemoryApplicationRepository();
+        $this->appRepository->store($this->app);
     }
 
     public function testSignInActionReturns401Response(): void
     {
-        $action = new SignInAction($this->userRepository);
-        $body = json_encode(['userName' => 'frank@example.com', 'password' => 'secrets']);
+        $action = new SignInAction($this->userRepository, $this->appRepository);
+        $body = json_encode(
+            [
+                'userName' => 'frank@example.com',
+                'password' => 'secrets',
+                'appId' => $this->app->appId()->__toString()
+            ]
+        );
         $request = new ServerRequest('POST', '/signin', ['Content-Type' => 'application/json'], (string) $body);
         $response = $action($request);
         $this->assertEquals(401, $response->getStatusCode());
@@ -63,15 +81,21 @@ class SignInActionTest extends TestCase
 
     private function makeValidRequest(): ResponseInterface
     {
-        $action = new SignInAction($this->userRepository);
+        $action = new SignInAction($this->userRepository, $this->appRepository);
         $this->userRepository->store(
             new User(
                 new EmailAddress('frank@example.com'),
                 new BcryptPassword('secrets'),
-                new ClientApplication(new AppId(), 'app', 'https://example.com', self::APP_SECRET)
+                [$this->app]
             )
         );
-        $body = json_encode(['userName' => 'frank@example.com', 'password' => 'secrets']);
+        $body = json_encode(
+            [
+                'userName' => 'frank@example.com',
+                'password' => 'secrets',
+                'appId' => $this->app->appId()->__toString()
+            ]
+        );
         $request = new ServerRequest('POST', '/signin', ['Content-Type' => 'application/json'], $body);
         return $action($request);
     }

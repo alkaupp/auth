@@ -31,7 +31,7 @@ class RegisterActionTest extends TestCase
             new User(
                 new EmailAddress($usedEmail),
                 new BcryptPassword($password),
-                new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')
+                [new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')]
             )
         );
         return [

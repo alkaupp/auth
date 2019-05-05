@@ -17,7 +17,7 @@ class AuthorizeTest extends TestCase
         $siteUrl = 'https://example.com';
         $secretKey = 'myAppSecret';
         $app = $authorize($appName, $siteUrl, $secretKey);
-        $this->assertClientAppValuesMatch($app, $appName, $siteUrl, $secretKey);
+        $this->assertClientAppValuesMatch($app, $appName);
     }
 
     public function testAuthorizeStoresClientApplicationInRepository(): void
@@ -28,14 +28,8 @@ class AuthorizeTest extends TestCase
         $this->assertSame($app, $appRepository->getById($app->appId()));
     }
 
-    private function assertClientAppValuesMatch(
-        ClientApplication $app,
-        string $appName,
-        string $siteUrl,
-        string $secretKey
-    ): void {
+    private function assertClientAppValuesMatch(ClientApplication $app, string $appName): void
+    {
         $this->assertSame($appName, $app->name());
-        $this->assertSame($siteUrl, $app->site());
-        $this->assertSame($secretKey, $app->secret());
     }
 }
