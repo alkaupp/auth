@@ -8,6 +8,7 @@ use Auth\Repository\ApplicationRepository;
 use Auth\Repository\NotFoundException;
 use Auth\Repository\UserRepository;
 use Auth\Service\Register;
+use InvalidArgumentException;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,7 +37,7 @@ final class RegisterAction
             $register = new Register($this->userRepository, $this->appRepository);
             $register($email, $password, $appId);
             return new Response(200);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException $exception) {
             return new Response(400);
         } catch (NotFoundException $exception) {
             return new Response(404);
