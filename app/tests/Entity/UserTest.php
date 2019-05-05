@@ -5,6 +5,7 @@ namespace Auth\Tests\Entity;
 
 use Auth\AuthenticationException;
 use Auth\Entity\Application\AppId;
+use Auth\Entity\Application\Applications;
 use Auth\Entity\Application\AuthenticationToken;
 use Auth\Entity\Application\ClientApplication;
 use Auth\Entity\User\EmailAddress;
@@ -21,7 +22,7 @@ class UserTest extends TestCase
         $user = new User(
             new EmailAddress('frank@example.com'),
             new BcryptPassword('poopsydoo'),
-            [$app]
+            new Applications([$app])
         );
         $this->expectException(AuthenticationException::class);
         $user->authenticateTo($app, 'poopsydough');
@@ -32,7 +33,7 @@ class UserTest extends TestCase
         $user = new User(
             new EmailAddress('frank@example.com'),
             new BcryptPassword('poopsydoo'),
-            [new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')]
+            new Applications([new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')])
         );
         $this->expectException(AuthorizationException::class);
         $user->authenticateTo(new ClientApplication(new AppId(), 'bleu', 'bleu', 'bleu'), 'poopsydoo');
@@ -44,7 +45,7 @@ class UserTest extends TestCase
         $user = new User(
             new EmailAddress('frank@example.com'),
             new BcryptPassword('poopsydoo'),
-            [$app]
+            new Applications([$app])
         );
         $token = $user->authenticateTo($app, 'poopsydoo');
         $this->assertInstanceOf(AuthenticationToken::class, $token);

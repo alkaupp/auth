@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Auth\Service;
 
 use Auth\Entity\Application\AppId;
+use Auth\Entity\Application\Applications;
 use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
@@ -37,7 +38,7 @@ class Register
     public function __invoke(string $userName, string $password, string $appId): User
     {
         $app = $this->appRepository->getById(AppId::fromString($appId));
-        $user = new User(new EmailAddress($userName), new BcryptPassword($password), [$app]);
+        $user = new User(new EmailAddress($userName), new BcryptPassword($password), new Applications([$app]));
         if ($this->userRepository->exists($user)) {
             throw new RegisterException('Username is already taken.');
         }

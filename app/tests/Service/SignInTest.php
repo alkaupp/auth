@@ -5,6 +5,7 @@ namespace Auth\Tests\Service;
 
 use Auth\AuthenticationException;
 use Auth\Entity\Application\AppId;
+use Auth\Entity\Application\Applications;
 use Auth\Entity\Application\AuthenticationToken;
 use Auth\Entity\Application\ClientApplication;
 use Auth\Entity\User\BcryptPassword;
@@ -88,7 +89,7 @@ class SignInTest extends TestCase
         return new User(
             new EmailAddress($email),
             new BcryptPassword($password),
-            [$this->app]
+            new Applications([$this->app])
         );
     }
 }

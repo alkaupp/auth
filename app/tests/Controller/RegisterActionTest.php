@@ -5,6 +5,7 @@ namespace Auth\Tests\Controller;
 
 use Auth\Controller\RegisterAction;
 use Auth\Entity\Application\AppId;
+use Auth\Entity\Application\Applications;
 use Auth\Entity\Application\ClientApplication;
 use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\User\EmailAddress;
@@ -31,7 +32,7 @@ class RegisterActionTest extends TestCase
             new User(
                 new EmailAddress($usedEmail),
                 new BcryptPassword($password),
-                [new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')]
+                new Applications([new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')])
             )
         );
         return [

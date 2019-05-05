@@ -5,6 +5,7 @@ namespace Auth\Entity\User;
 
 use Auth\AuthenticationException;
 use Auth\Entity\Application\AppId;
+use Auth\Entity\Application\Applications;
 use Auth\Entity\Application\AuthenticationToken;
 use Auth\Entity\Application\ClientApplication;
 use Auth\AuthorizationException;
@@ -16,7 +17,7 @@ final class User
     private $password;
     private $applications;
 
-    public function __construct(EmailAddress $emailAddress, Password $password, array $applications)
+    public function __construct(EmailAddress $emailAddress, Password $password, Applications $applications)
     {
         $this->userId = new UserId();
         $this->emailAddress = $emailAddress;
@@ -40,7 +41,7 @@ final class User
         $newUser = new self(
             new EmailAddress($user['email']),
             BcryptPassword::fromHash($user['password']),
-            $applications
+            new Applications($applications)
         );
         $newUser->userId = UserId::fromString($user['id']);
         return $newUser;
@@ -71,7 +72,7 @@ final class User
         return $clientApp->createTokenFor($this);
     }
 
-    public function authenticate(string $password): void
+    private function authenticate(string $password): void
     {
         if (!$this->password->matches($password)) {
             throw new AuthenticationException('Invalid password');
@@ -89,9 +90,7 @@ final class User
             'id' => $this->userId->__toString(),
             'email' => $this->email()->__toString(),
             'password' => $this->password->toHash(),
-            // @fixme for multiple applications
-            //'appId' => $this->application->appId()->__toString()
-            'applications' => []
+            'applications' => $this->applications->jsonSerialize()
         ];
     }
 

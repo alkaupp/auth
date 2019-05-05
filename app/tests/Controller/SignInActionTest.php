@@ -5,6 +5,7 @@ namespace Auth\Tests\Controller;
 
 use Auth\Controller\SignInAction;
 use Auth\Entity\Application\AppId;
+use Auth\Entity\Application\Applications;
 use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\Application\ClientApplication;
 use Auth\Entity\User\EmailAddress;
@@ -86,7 +87,7 @@ class SignInActionTest extends TestCase
             new User(
                 new EmailAddress('frank@example.com'),
                 new BcryptPassword('secrets'),
-                [$this->app]
+                new Applications([$this->app])
             )
         );
         $body = json_encode(
