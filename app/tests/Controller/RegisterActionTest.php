@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 class RegisterActionTest extends TestCase
 {
     private const APP_ID = '54036de4-652a-11e9-8888-c5d1c66dcec3';
+    private const APP_ID2 = '5d4f1c75-7032-11e9-8afd-ccf04cab7547';
     private const INVALID_APP_ID = '54036de4-652a-11e9-8888-c5d1c66dcec4';
 
     public function registerDataProvider(): array
@@ -32,14 +33,15 @@ class RegisterActionTest extends TestCase
             new User(
                 new EmailAddress($usedEmail),
                 new BcryptPassword($password),
-                new Applications([new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')])
+                new Applications([new ClientApplication(AppId::fromString(self::APP_ID), 'blaa', 'blaa', 'blaa')])
             )
         );
         return [
             [$repository, $this->getRequestBody($email, $password, self::APP_ID), 200],
             [$repository, $this->getRequestBody($invalidEmail, $password, self::APP_ID), 400],
             [$repository, $this->getRequestBody($email, $password, self::INVALID_APP_ID), 404],
-            [$repository, $this->getRequestBody($usedEmail, $password, self::APP_ID), 409]
+            [$repository, $this->getRequestBody($usedEmail, $password, self::APP_ID), 409],
+            [$repository, $this->getRequestBody($usedEmail, 'badpassword', self::APP_ID2), 401]
         ];
     }
 
@@ -53,6 +55,7 @@ class RegisterActionTest extends TestCase
     {
         $appRepository = new InMemoryApplicationRepository();
         $appRepository->store(new ClientApplication(AppId::fromString(self::APP_ID), "blaa", "blaa", "blaa"));
+        $appRepository->store(new ClientApplication(AppId::fromString(self::APP_ID2), "bloo", "bloo", "blåå"));
         $registerAction = new RegisterAction($repository, $appRepository);
         $request = new ServerRequest('POST', '/register', ['Content-Type' => 'application/json'], (string) $body);
         $response = $registerAction($request);

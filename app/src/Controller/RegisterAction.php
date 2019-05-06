@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Auth\Controller;
 
+use Auth\AuthenticationException;
 use Auth\RegisterException;
 use Auth\Repository\ApplicationRepository;
 use Auth\Repository\NotFoundException;
@@ -31,14 +32,16 @@ final class RegisterAction
     {
         try {
             $body = json_decode($request->getBody()->__toString(), true);
-            $email = $body["userName"];
-            $password = $body["password"];
-            $appId = $body["appId"];
+            $email = $body['userName'];
+            $password = $body['password'];
+            $appId = $body['appId'];
             $register = new Register($this->userRepository, $this->appRepository);
             $register($email, $password, $appId);
             return new Response(200);
         } catch (InvalidArgumentException $exception) {
             return new Response(400);
+        } catch (AuthenticationException $exception) {
+            return new Response(401);
         } catch (NotFoundException $exception) {
             return new Response(404);
         } catch (RegisterException $exception) {
