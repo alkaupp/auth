@@ -93,6 +93,10 @@ final class User
             'applications' => $this->applications->jsonSerialize()
         ];
     }
+    public function addApplication(ClientApplication $application): void
+    {
+        $this->applications->add($application);
+    }
 
     private function hasApplication(ClientApplication $clientApp): bool
     {

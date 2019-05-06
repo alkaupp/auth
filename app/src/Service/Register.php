@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Auth\Service;
 
+use Auth\AuthenticationException;
+use Auth\AuthorizationException;
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\Applications;
 use Auth\Entity\User\BcryptPassword;
@@ -34,13 +36,20 @@ class Register
      * @return User
      * @throws NotFoundException
      * @throws RegisterException
+     * @throws AuthenticationException
      */
     public function __invoke(string $userName, string $password, string $appId): User
     {
         $app = $this->appRepository->getById(AppId::fromString($appId));
         $user = new User(new EmailAddress($userName), new BcryptPassword($password), new Applications([$app]));
         if ($this->userRepository->exists($user)) {
-            throw new RegisterException('Username is already taken.');
+            $user = $this->userRepository->getByEmailAddress(new EmailAddress($userName));
+            try {
+                $user->authenticateTo($app, $password);
+                throw new RegisterException('Username is already taken.');
+            } catch (AuthorizationException $exception) {
+                $user->addApplication($app);
+            }
         }
         $this->userRepository->store($user);
         return $user;
