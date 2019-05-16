@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Auth\Entity\Application;
 
+use Auth\AuthenticationException;
+use Auth\AuthorizationException;
 use Auth\Entity\User\User;
 use JsonSerializable;
 use Lcobucci\JWT\Builder;
@@ -58,6 +60,14 @@ class ClientApplication implements JsonSerializable
             'siteUrl' => $this->site,
             'secretKey' => $this->secretKey
         ];
+    }
+
+    public function authenticate(User $user): AuthenticationToken
+    {
+        if ($user->hasApplication($this) && $user->isAuthenticated()) {
+            return $this->createTokenFor($user);
+        }
+        throw new AuthorizationException(sprintf('User is not a user of application %s', $this->name));
     }
 
     public function createTokenFor(User $user): AuthenticationToken

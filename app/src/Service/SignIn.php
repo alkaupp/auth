@@ -36,6 +36,7 @@ class SignIn
     {
         $app = $this->appRepository->getById(AppId::fromString($appId));
         $user = $this->userRepository->getByEmailAddress(new EmailAddress($userName));
-        return $user->authenticateTo($app, $password);
+        $user->verifyPassword($password);
+        return $app->authenticate($user);
     }
 }

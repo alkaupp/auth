@@ -25,18 +25,21 @@ class UserTest extends TestCase
             new Applications([$app])
         );
         $this->expectException(AuthenticationException::class);
-        $user->authenticateTo($app, 'poopsydough');
+        $user->verifyPassword('poopsydough');
     }
 
     public function testAuthenticateToThrowsAuthorizationException(): void
     {
+        $app = new Applications([new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')]);
         $user = new User(
             new EmailAddress('frank@example.com'),
             new BcryptPassword('poopsydoo'),
-            new Applications([new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')])
+            $app
         );
         $this->expectException(AuthorizationException::class);
-        $user->authenticateTo(new ClientApplication(new AppId(), 'bleu', 'bleu', 'bleu'), 'poopsydoo');
+        $user->verifyPassword('poopsydoo');
+        $app2 = new ClientApplication(new AppId(), 'bleu', 'bleu', 'bleu');
+        $app2->authenticate($user);
     }
 
     public function testAuthenticateToReturnsAuthenticationToken(): void
@@ -47,7 +50,8 @@ class UserTest extends TestCase
             new BcryptPassword('poopsydoo'),
             new Applications([$app])
         );
-        $token = $user->authenticateTo($app, 'poopsydoo');
+        $user->verifyPassword('poopsydoo');
+        $token = $app->authenticate($user);
         $this->assertInstanceOf(AuthenticationToken::class, $token);
     }
 }

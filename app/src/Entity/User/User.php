@@ -16,6 +16,7 @@ final class User
     private $emailAddress;
     private $password;
     private $applications;
+    private $authenticated;
 
     public function __construct(EmailAddress $emailAddress, Password $password, Applications $applications)
     {
@@ -23,6 +24,7 @@ final class User
         $this->emailAddress = $emailAddress;
         $this->password = $password;
         $this->applications = $applications;
+        $this->authenticated = false;
     }
 
     public static function fromArray(array $user): self
@@ -57,26 +59,12 @@ final class User
         return $this->emailAddress;
     }
 
-    /**
-     * @param ClientApplication $clientApp
-     * @param string $password
-     * @return AuthenticationToken
-     * @throws AuthorizationException
-     */
-    public function authenticateTo(ClientApplication $clientApp, string $password): AuthenticationToken
-    {
-        $this->authenticate($password);
-        if (!$this->hasApplication($clientApp)) {
-            throw new AuthorizationException(sprintf('User is not a user of application %s', $clientApp->name()));
-        }
-        return $clientApp->createTokenFor($this);
-    }
-
-    private function authenticate(string $password): void
+    public function verifyPassword(string $password): void
     {
         if (!$this->password->matches($password)) {
             throw new AuthenticationException('Invalid password');
         }
+        $this->authenticated = true;
     }
 
     public function equals(User $user): bool
@@ -98,7 +86,7 @@ final class User
         $this->applications->add($application);
     }
 
-    private function hasApplication(ClientApplication $clientApp): bool
+    public function hasApplication(ClientApplication $clientApp): bool
     {
         /** @var ClientApplication $application */
         foreach ($this->applications as $application) {
@@ -107,5 +95,10 @@ final class User
             }
         }
         return false;
+    }
+
+    public function isAuthenticated(): bool
+    {
+        return $this->authenticated;
     }
 }

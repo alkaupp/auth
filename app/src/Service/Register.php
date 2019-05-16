@@ -45,7 +45,8 @@ class Register
         if ($this->userRepository->exists($user)) {
             $user = $this->userRepository->getByEmailAddress(new EmailAddress($userName));
             try {
-                $user->authenticateTo($app, $password);
+                $user->verifyPassword($password);
+                $app->authenticate($user);
                 throw new RegisterException('Username is already taken.');
             } catch (AuthorizationException $exception) {
                 $user->addApplication($app);

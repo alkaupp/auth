@@ -73,12 +73,11 @@ class RegisterTest extends TestCase
         $user = $this->createDefaultUser();
         $this->userRepository->store($user);
         $appId = new AppId();
-        $app2 = new ClientApplication($appId, 'myApp2', 'https://example.com', 'secrets');
-        $this->appRepository->store($app2);
+        $app = new ClientApplication($appId, 'myApp2', 'https://example.com', 'secrets');
+        $this->appRepository->store($app);
         $register = new Register($this->userRepository, $this->appRepository);
         $register(self::DEFAULT_USERNAME, self::DEFAULT_PASSWORD, (string) $appId);
-        // This is the only possible way to verify the application is added
-        $this->assertInstanceOf(AuthenticationToken::class, $user->authenticateTo($app2, self::DEFAULT_PASSWORD));
+        $this->assertTrue($user->hasApplication($app));
     }
 
     private function createDefaultUser(): User
