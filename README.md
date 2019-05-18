@@ -58,7 +58,8 @@ POST /signin
 ```json
 {
   "userName": "me@example.com",
-  "password": "password123"
+  "password": "password123",
+  "appId": "54036de4-652a-11e9-8888-c5d1c66dcec3"
 }
 ```
 
