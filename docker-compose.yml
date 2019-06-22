@@ -6,7 +6,7 @@ services:
     build:
       context: ./docker
     ports:
-      - "8080:80"
+      - "8000:80"
     volumes:
       - ./app:/var/www/html
   composer:
@@ -41,6 +41,6 @@ services:
     volumes:
       - ./docs:/mnt
     ports:
-      - 8000:8080
+      - 8001:8080
 volumes:
   db-data:
