@@ -77,7 +77,7 @@ class ClientApplication implements JsonSerializable
             ->setAudience($this->site)
             ->setId(Uuid::uuid4()->toString(), true) // Configures the id (jti claim), replicating as a header item
             ->setIssuedAt(time())
-            ->setNotBefore(time() + 60)
+            ->setNotBefore(time())
             ->setExpiration(time() + 3600)
             ->set('userName', (string) $user->email())
             ->sign(new Sha256(), $this->secretKey)
