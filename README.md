@@ -10,6 +10,8 @@ Running the application
 docker-compose up
 ```
 
+Auth application will run in http://localhost:8000.
+
 Usage
 -----
 
@@ -65,7 +67,7 @@ POST /signin
 
 Successful authentication will return a HTTP 200 response accompanied with a JWT-token.
 
-**NOTE**: Api documentation can be found in http://localhost:8000
+**NOTE**: Api documentation can be found in http://localhost:8001
 
 Common development operations
 -----------------------------
