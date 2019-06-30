@@ -26,7 +26,7 @@ final class PasswordChange
     public function __invoke(string $username, string $oldPassword, string $newPassword)
     {
         $user = $this->userRepository->getByEmailAddress(new EmailAddress($username));
-        $user->verifyPassword($oldPassword);
-        $user->changePassword($newPassword);
+        $user->changePassword($oldPassword, $newPassword);
+        $this->userRepository->store($user);
     }
 }

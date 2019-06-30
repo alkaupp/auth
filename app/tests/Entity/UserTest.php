@@ -46,15 +46,15 @@ class UserTest extends TestCase
     public function testChangePasswordThrowsAuthenticationException(): void
     {
         $this->expectException(AuthenticationException::class);
-        $this->expectExceptionMessage('Unauthenticated user cannot change the password');
-        $this->createUser(new Applications())->changePassword('definitely different pass');
+        $this->expectExceptionMessage("Invalid password");
+        $this->createUser(new Applications())->changePassword('old password', 'new password');
     }
 
     public function testChangePasswordIsChanged(): void
     {
         $user = $this->createUser(new Applications());
         $user->verifyPassword(self::DEFAULT_PASSWORD);
-        $user->changePassword('my new password');
+        $user->changePassword(self::DEFAULT_PASSWORD, 'my new password');
         $user->verifyPassword('my new password');
         $this->assertTrue($user->isAuthenticated());
     }

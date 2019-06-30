@@ -65,12 +65,10 @@ final class User
         $this->authenticated = true;
     }
 
-    public function changePassword(string $password): void
+    public function changePassword(string $oldPassword, string $newPassword): void
     {
-        if (!$this->isAuthenticated()) {
-            throw new AuthenticationException('Unauthenticated user cannot change the password');
-        }
-        $this->password = new BcryptPassword($password);
+        $this->verifyPassword($oldPassword);
+        $this->password = new BcryptPassword($newPassword);
     }
 
     public function equals(User $user): bool
