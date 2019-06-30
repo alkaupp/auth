@@ -16,42 +16,60 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
+    private const DEFAULT_USERNAME = 'frank@example.com';
+    private const DEFAULT_PASSWORD = 'poopsydoo';
     public function testAuthenticateToThrowsAuthenticationException(): void
     {
-        $app = new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa');
-        $user = new User(
-            new EmailAddress('frank@example.com'),
-            new BcryptPassword('poopsydoo'),
-            new Applications([$app])
-        );
+        $user = $this->createUser(new Applications([$this->createApplication()]));
         $this->expectException(AuthenticationException::class);
         $user->verifyPassword('poopsydough');
     }
 
     public function testAuthenticateToThrowsAuthorizationException(): void
     {
-        $app = new Applications([new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa')]);
-        $user = new User(
-            new EmailAddress('frank@example.com'),
-            new BcryptPassword('poopsydoo'),
-            $app
-        );
+        $user = $this->createUser(new Applications([$this->createApplication()]));
         $this->expectException(AuthorizationException::class);
-        $user->verifyPassword('poopsydoo');
+        $user->verifyPassword(self::DEFAULT_PASSWORD);
         $app2 = new ClientApplication(new AppId(), 'bleu', 'bleu', 'bleu');
         $app2->authenticate($user);
     }
 
     public function testAuthenticateToReturnsAuthenticationToken(): void
     {
-        $app = new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa');
-        $user = new User(
-            new EmailAddress('frank@example.com'),
-            new BcryptPassword('poopsydoo'),
-            new Applications([$app])
-        );
-        $user->verifyPassword('poopsydoo');
+        $app = $this->createApplication();
+        $user = $this->createUser(new Applications([$app]));
+        $user->verifyPassword(self::DEFAULT_PASSWORD);
         $token = $app->authenticate($user);
         $this->assertInstanceOf(AuthenticationToken::class, $token);
+    }
+
+    public function testChangePasswordThrowsAuthenticationException(): void
+    {
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('Unauthenticated user cannot change the password');
+        $this->createUser(new Applications())->changePassword('definitely different pass');
+    }
+
+    public function testChangePasswordIsChanged(): void
+    {
+        $user = $this->createUser(new Applications());
+        $user->verifyPassword(self::DEFAULT_PASSWORD);
+        $user->changePassword('my new password');
+        $user->verifyPassword('my new password');
+        $this->assertTrue($user->isAuthenticated());
+    }
+
+    private function createUser(Applications $applications): User
+    {
+        return new User(
+            new EmailAddress(self::DEFAULT_USERNAME),
+            new BcryptPassword(self::DEFAULT_PASSWORD),
+            $applications
+        );
+    }
+
+    private function createApplication(): ClientApplication
+    {
+        return new ClientApplication(new AppId(), 'blaa', 'blaa', 'blaa');
     }
 }

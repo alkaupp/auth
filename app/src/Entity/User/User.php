@@ -6,9 +6,7 @@ namespace Auth\Entity\User;
 use Auth\AuthenticationException;
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\Applications;
-use Auth\Entity\Application\AuthenticationToken;
 use Auth\Entity\Application\ClientApplication;
-use Auth\AuthorizationException;
 
 final class User
 {
@@ -65,6 +63,14 @@ final class User
             throw new AuthenticationException('Invalid password');
         }
         $this->authenticated = true;
+    }
+
+    public function changePassword(string $password): void
+    {
+        if (!$this->isAuthenticated()) {
+            throw new AuthenticationException('Unauthenticated user cannot change the password');
+        }
+        $this->password = new BcryptPassword($password);
     }
 
     public function equals(User $user): bool

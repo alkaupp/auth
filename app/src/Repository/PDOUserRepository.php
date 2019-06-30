@@ -62,7 +62,10 @@ class PDOUserRepository implements UserRepository
 
     private function storeUser(User $user): void
     {
-        $sql = 'INSERT INTO "user" (id, email, password) VALUES(:id, :email, :password);';
+        $sql = <<<SQL
+INSERT INTO "user" (id, email, password) VALUES(:id, :email, :password)
+ON CONFLICT (id) DO UPDATE SET email=:email, password=:password;
+SQL;
         $statement = $this->pdo->prepare($sql);
         $userArray = $user->toArray();
         unset($userArray['applications']);
