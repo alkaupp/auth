@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Auth\Service;
 
+use Auth\AuthenticationException;
 use Auth\Entity\User\EmailAddress;
 use Auth\Repository\NotFoundException;
 use Auth\Repository\UserRepository;
@@ -22,6 +23,7 @@ final class PasswordChange
      * @param string $oldPassword
      * @param string $newPassword
      * @throws NotFoundException
+     * @throws AuthenticationException
      */
     public function __invoke(string $username, string $oldPassword, string $newPassword)
     {
