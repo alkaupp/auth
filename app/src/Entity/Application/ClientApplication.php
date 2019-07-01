@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Auth\Entity\Application;
 
-use Auth\AuthenticationException;
 use Auth\AuthorizationException;
 use Auth\Entity\User\User;
 use JsonSerializable;
@@ -13,11 +12,10 @@ use Ramsey\Uuid\Uuid;
 
 class ClientApplication implements JsonSerializable
 {
-    /** @var AppId */
-    private $appId;
-    private $name;
-    private $site;
-    private $secretKey;
+    private AppId $appId;
+    private string $name;
+    private string $site;
+    private string $secretKey;
 
     public function __construct(AppId $appId, string $name, string $siteUrl, string $secretKey)
     {

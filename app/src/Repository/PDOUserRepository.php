@@ -11,8 +11,7 @@ use PDOException;
 
 class PDOUserRepository implements UserRepository
 {
-    /** @var PDO */
-    private $pdo;
+    private PDO $pdo;
 
     public function __construct(PDOFactory $pdoFactory)
     {

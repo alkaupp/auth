@@ -14,8 +14,8 @@ use Auth\Repository\UserRepository;
 
 class SignIn
 {
-    private $userRepository;
-    private $appRepository;
+    private UserRepository $userRepository;
+    private ApplicationRepository $appRepository;
 
     public function __construct(UserRepository $userRepository, ApplicationRepository $appRepository)
     {

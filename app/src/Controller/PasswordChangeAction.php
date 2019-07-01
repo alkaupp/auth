@@ -13,8 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class PasswordChangeAction
 {
-    /** @var UserRepository */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {

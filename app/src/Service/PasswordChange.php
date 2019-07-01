@@ -10,8 +10,7 @@ use Auth\Repository\UserRepository;
 
 final class PasswordChange
 {
-    /** @var UserRepository */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {

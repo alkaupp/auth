@@ -25,16 +25,11 @@ class RegisterTest extends TestCase
     private const DEFAULT_USERNAME = 'frank@example.com';
     private const DEFAULT_PASSWORD = 'supersecret';
 
-    /** @var UserRepository */
-    private $userRepository;
+    private UserRepository $userRepository;
+    private ApplicationRepository $appRepository;
+    private ClientApplication $app;
 
-    /** @var ApplicationRepository */
-    private $appRepository;
-
-    /** @var ClientApplication */
-    private $app;
-
-    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function setUp()
     {
         $this->userRepository = new InMemoryUserRepository();
         $this->appRepository = new InMemoryApplicationRepository();

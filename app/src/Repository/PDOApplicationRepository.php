@@ -9,7 +9,7 @@ use PDO;
 
 class PDOApplicationRepository implements ApplicationRepository
 {
-    private $pdo;
+    private PDO $pdo;
 
     public function __construct(PDOFactory $factory)
     {

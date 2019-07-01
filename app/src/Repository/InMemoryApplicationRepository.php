@@ -8,8 +8,8 @@ use Auth\Entity\Application\ClientApplication;
 
 class InMemoryApplicationRepository implements ApplicationRepository
 {
-    /** @var array|ClientApplication[] */
-    private $apps;
+    /** @var ClientApplication[] */
+    private array $apps;
 
     public function __construct()
     {

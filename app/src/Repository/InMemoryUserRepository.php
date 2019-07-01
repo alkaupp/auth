@@ -9,8 +9,8 @@ use Auth\Entity\User\UserId;
 
 final class InMemoryUserRepository implements UserRepository
 {
-    /** @var array|User[] */
-    private $users;
+    /** @var User[] */
+    private array $users;
 
     public function __construct()
     {

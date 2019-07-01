@@ -17,11 +17,8 @@ use Auth\Repository\UserRepository;
 
 class Register
 {
-    /** @var UserRepository */
-    private $userRepository;
-
-    /** @var ApplicationRepository */
-    private $appRepository;
+    private UserRepository $userRepository;
+    private ApplicationRepository $appRepository;
 
     public function __construct(UserRepository $userRepository, ApplicationRepository $applicationRepository)
     {

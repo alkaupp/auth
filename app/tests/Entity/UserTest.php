@@ -18,6 +18,7 @@ class UserTest extends TestCase
 {
     private const DEFAULT_USERNAME = 'frank@example.com';
     private const DEFAULT_PASSWORD = 'poopsydoo';
+
     public function testAuthenticateToThrowsAuthenticationException(): void
     {
         $user = $this->createUser(new Applications([$this->createApplication()]));

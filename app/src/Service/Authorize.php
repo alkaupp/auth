@@ -9,8 +9,7 @@ use Auth\Repository\ApplicationRepository;
 
 class Authorize
 {
-    /** @var ApplicationRepository */
-    private $appRepository;
+    private ApplicationRepository $appRepository;
 
     public function __construct(ApplicationRepository $appRepository)
     {

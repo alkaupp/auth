@@ -26,14 +26,9 @@ class SignInActionTest extends TestCase
 {
     private const APP_SECRET = '53CR37';
 
-    /** @var UserRepository */
-    private $userRepository;
-
-    /** @var ApplicationRepository */
-    private $appRepository;
-
-    /** @var ClientApplication */
-    private $app;
+    private UserRepository $userRepository;
+    private ApplicationRepository $appRepository;
+    private ClientApplication $app;
 
     protected function setUp()
     {

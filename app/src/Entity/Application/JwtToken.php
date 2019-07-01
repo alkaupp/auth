@@ -7,7 +7,7 @@ use Lcobucci\JWT\Token;
 
 class JwtToken implements AuthenticationToken
 {
-    private $token;
+    private Token $token;
 
     public function __construct(Token $token)
     {

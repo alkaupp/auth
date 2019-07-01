@@ -22,14 +22,9 @@ use PHPUnit\Framework\TestCase;
 
 class SignInTest extends TestCase
 {
-    /** @var UserRepository */
-    private $userRepository;
-
-    /** @var ApplicationRepository */
-    private $appRepository;
-
-    /** @var ClientApplication */
-    private $app;
+    private UserRepository $userRepository;
+    private ApplicationRepository $appRepository;
+    private ClientApplication $app;
 
     protected function setUp()
     {

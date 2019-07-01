@@ -10,11 +10,11 @@ use Auth\Entity\Application\ClientApplication;
 
 final class User
 {
-    private $userId;
-    private $emailAddress;
-    private $password;
-    private $applications;
-    private $authenticated;
+    private UserId $userId;
+    private EmailAddress $emailAddress;
+    private Password $password;
+    private Applications $applications;
+    private bool $authenticated;
 
     public function __construct(EmailAddress $emailAddress, Password $password, Applications $applications)
     {

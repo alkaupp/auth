@@ -5,7 +5,7 @@ namespace Auth\Entity\User;
 
 final class EmailAddress
 {
-    private $emailAddress;
+    private string $emailAddress;
 
     public function __construct(string $emailAddress)
     {

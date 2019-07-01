@@ -9,7 +9,7 @@ use const PASSWORD_BCRYPT;
 
 final class BcryptPassword implements Password
 {
-    private $password;
+    private string $password;
 
     public function __construct(string $password)
     {

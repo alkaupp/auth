@@ -11,7 +11,7 @@ use JsonSerializable;
 class Applications implements IteratorAggregate, JsonSerializable
 {
     /** @var ClientApplication[] */
-    private $applications;
+    private array $applications;
 
     public function __construct(array $applications = [])
     {

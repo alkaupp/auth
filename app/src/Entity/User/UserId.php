@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace Auth\Entity\User;
 
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class UserId
 {
-    private $value;
+    private UuidInterface $value;
 
     public function __construct()
     {

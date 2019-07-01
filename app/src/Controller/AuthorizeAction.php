@@ -11,8 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AuthorizeAction
 {
-    /** @var ApplicationRepository */
-    private $appRepository;
+    private ApplicationRepository $appRepository;
 
     public function __construct(ApplicationRepository $appRepository)
     {
