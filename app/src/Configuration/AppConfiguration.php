@@ -20,7 +20,7 @@ class AppConfiguration implements Configuration
     {
         $configurations = ClassFinder::getClassesInNamespace(__NAMESPACE__);
         foreach ($configurations as $config) {
-            if ($config === self::class) {
+            if ($config === self::class || $config === Configuration::class) {
                 continue;
             }
             $this->applyConfiguration($this->container->get($config));
