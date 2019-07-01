@@ -4,6 +4,7 @@ declare(strict_types=1);
 use Auth\Configuration\EnvironmentConfiguration;
 use Auth\Configuration\RouteConfiguration;
 use Auth\Controller\AuthorizeAction;
+use Auth\Controller\PasswordChangeAction;
 use Auth\Controller\RegisterAction;
 use Auth\Controller\SignInAction;
 use Auth\Repository\ApplicationRepository;
@@ -44,5 +45,7 @@ return [
     SignInAction::class => create(SignInAction::class)
         ->constructor(get(UserRepository::class), get(ApplicationRepository::class)),
     RegisterAction::class => create(RegisterAction::class)
-        ->constructor(get(UserRepository::class), get(ApplicationRepository::class))
+        ->constructor(get(UserRepository::class), get(ApplicationRepository::class)),
+    PasswordChangeAction::class => create(PasswordChangeAction::class)
+        ->constructor(get(UserRepository::class))
 ];
