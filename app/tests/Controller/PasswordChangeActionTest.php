@@ -20,44 +20,18 @@ class PasswordChangeActionTest extends TestCase
     public function testReturns200Response(): void
     {
         $repo = new InMemoryUserRepository();
-        $repo->store(
-            new User(
-                new EmailAddress(self::DEFAULT_USERNAME),
-                new BcryptPassword(self::DEFAULT_PASSWORD),
-                new Applications()
-            )
-        );
+        $repo->store($this->createUser(self::DEFAULT_USERNAME, self::DEFAULT_PASSWORD));
         $action = new PasswordChangeAction($repo);
-        $response = $action(
-            new ServerRequest(
-                'POST',
-                '/changepassword',
-                ['Content-Type' => 'application/json'],
-                $this->createPayloadBody()
-            )
-        );
+        $response = $action($this->createServerRequest());
         $this->assertSame(200, $response->getStatusCode());
     }
 
     public function testReturns401Response(): void
     {
         $repo = new InMemoryUserRepository();
-        $repo->store(
-            new User(
-                new EmailAddress(self::DEFAULT_USERNAME),
-                new BcryptPassword('wrong old password'),
-                new Applications()
-            )
-        );
+        $repo->store($this->createUser(self::DEFAULT_USERNAME, 'wrong old password'));
         $action = new PasswordChangeAction($repo);
-        $response = $action(
-            new ServerRequest(
-                'POST',
-                '/changepassword',
-                ['Content-Type' => 'application/json'],
-                $this->createPayloadBody()
-            )
-        );
+        $response = $action($this->createServerRequest());
         $this->assertSame(401, $response->getStatusCode());
     }
 
@@ -65,14 +39,7 @@ class PasswordChangeActionTest extends TestCase
     public function testReturns404Response(): void
     {
         $action = new PasswordChangeAction(new InMemoryUserRepository());
-        $response = $action(
-            new ServerRequest(
-                'POST',
-                '/changepassword',
-                ['Content-Type' => 'application/json'],
-                $this->createPayloadBody()
-            )
-        );
+        $response = $action($this->createServerRequest());
         $this->assertSame(404, $response->getStatusCode());
     }
 
@@ -84,6 +51,25 @@ class PasswordChangeActionTest extends TestCase
                 'oldPassword' => self::DEFAULT_PASSWORD,
                 'newPassword' => 'sterces'
             ]
+        );
+    }
+
+    private function createServerRequest(): ServerRequest
+    {
+        return new ServerRequest(
+            'POST',
+            '/changepassword',
+            ['Content-Type' => 'application/json'],
+            $this->createPayloadBody()
+        );
+    }
+
+    private function createUser(string $username, string $password): User
+    {
+        return new User(
+            new EmailAddress($username),
+            new BcryptPassword($password),
+            new Applications()
         );
     }
 }
