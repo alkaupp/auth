@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Auth\Application;
 
 use Auth\Server\RequestSender;
-use Exception;
 use League\Route\Http\Exception\NotFoundException;
 use League\Route\Router;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7Server\ServerRequestCreatorInterface;
+use Throwable;
 
 class HttpApplication
 {
@@ -34,7 +34,7 @@ class HttpApplication
                 ["Content-Type" => "application/json"],
                 json_encode(["status" => 404, "error" => $e->getMessage()])
             );
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $response = new Response(
                 500,
                 ["Content-Type" => "application/json"],
