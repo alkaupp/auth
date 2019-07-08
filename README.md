@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/alkaupp/auth.svg?branch=master)](https://travis-ci.com/alkaupp/auth)
+
 Auth
 ====
 
