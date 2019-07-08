@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Auth\Application;
 
 use Auth\Server\RequestSender;
+use InvalidArgumentException;
 use League\Route\Http\Exception\NotFoundException;
 use League\Route\Router;
 use Nyholm\Psr7\Response;
@@ -33,6 +34,13 @@ class HttpApplication
                 404,
                 ["Content-Type" => "application/json"],
                 json_encode(["status" => 404, "error" => $e->getMessage()])
+            );
+        }
+        catch (InvalidArgumentException $e) {
+            $response = new Response(
+                400,
+                ["Content-Type" => "application/json"],
+                json_encode(["status" => 400, "error" => $e->getMessage()])
             );
         } catch (Throwable $e) {
             $response = new Response(
