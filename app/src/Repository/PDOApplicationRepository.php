@@ -40,4 +40,11 @@ class PDOApplicationRepository implements ApplicationRepository
         $statement = $this->pdo->prepare($sql);
         $statement->execute($application->jsonSerialize());
     }
+
+    public function remove(AppId $appId): void
+    {
+        $sql = 'DELETE FROM application WHERE id=:appId;';
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(['appId' => $appId->__toString()]);
+    }
 }

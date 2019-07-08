@@ -54,4 +54,13 @@ final class InMemoryUserRepository implements UserRepository
         }
         return false;
     }
+
+    public function remove(UserId $userId): void
+    {
+        foreach ($this->users as $index => $user) {
+            if ($user->userId()->equals($userId)) {
+                unset($this->users[$index]);
+            }
+        }
+    }
 }

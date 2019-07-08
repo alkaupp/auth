@@ -29,4 +29,5 @@ interface UserRepository
      */
     public function store(User $user): void;
     public function exists(User $user): bool;
+    public function remove(UserId $userId): void;
 }

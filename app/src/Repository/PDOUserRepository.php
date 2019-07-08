@@ -128,4 +128,11 @@ SQL;
         $statement->execute(['userId' => $userId->__toString()]);
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function remove(UserId $userId): void
+    {
+        $sql = 'DELETE FROM "user" WHERE id=:userId;';
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute(['userId' => $userId->__toString()]);
+    }
 }

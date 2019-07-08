@@ -15,4 +15,5 @@ interface ApplicationRepository
      */
     public function getById(AppId $appId): ClientApplication;
     public function store(ClientApplication $application): void;
+    public function remove(AppId $appId): void;
 }

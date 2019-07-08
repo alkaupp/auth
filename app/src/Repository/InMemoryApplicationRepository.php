@@ -30,4 +30,13 @@ class InMemoryApplicationRepository implements ApplicationRepository
     {
         $this->apps[] = $application;
     }
+
+    public function remove(AppId $appId): void
+    {
+        foreach ($this->apps as $index => $app) {
+            if ($app->appId()->equals($appId)) {
+                unset($this->apps[$index]);
+            }
+        }
+    }
 }
