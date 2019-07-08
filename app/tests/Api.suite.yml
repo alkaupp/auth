@@ -1,7 +1,7 @@
 actor: ApiTester
 modules:
     enabled:
-        - \Auth\Tests\Helper\Api
+        - \Auth\Tests\_support\Helper\Api
         - REST:
               url: http://localhost/
               depends: PhpBrowser

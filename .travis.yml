@@ -1,0 +1,15 @@
+services:
+    - docker
+before_script:
+    - sudo service postgresql stop
+script:
+    - docker-compose build
+    - docker-compose run composer install --ignore-platform-reqs
+    - docker-compose up -d
+    - cp app/.env.example app/.env
+    - docker exec -it auth-php-server bash -c 'vendor/bin/phpunit'
+    - docker exec -it auth-php-server bash -c 'vendor/bin/phpstan analyse -l 5'
+    - docker exec -it auth-php-server bash -c 'vendor/bin/phpcs'
+    - docker exec -it auth-php-server bash -c 'vendor/bin/codecept build'
+    - docker exec -it auth-php-server bash -c 'vendor/bin/codecept run Api'
+    - docker-compose down

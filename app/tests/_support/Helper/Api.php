@@ -1,5 +1,6 @@
 <?php
-namespace Auth\Tests\Helper;
+
+namespace Auth\Tests\_support\Helper;
 
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\ClientApplication;
