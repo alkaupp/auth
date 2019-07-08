@@ -82,9 +82,14 @@ Add new dependencies
 docker-compose run composer require somevendor/somelib --ignore-platform-reqs
 ```
 
-Run tests
+Run unit tests
 ```
 docker exec -it auth-php-server bash -c 'vendor/bin/phpunit'
+```
+
+Run acceptance tests
+```
+docker exec -it auth-php-server bash -c 'vendor/bin/codecept run Api'
 ```
 
 Run static analysis with phpstan
