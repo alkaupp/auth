@@ -5,6 +5,7 @@ parameters:
   paths: ["src", "tests"]
   excludes_analyse:
     - tests/_support/ApiTester.php
+    - tests/_support/Helper/Api.php
     - tests/Api/SignInCest.php
     - tests/Api/RegisterCest.php
     - tests/Api/AuthorizeCest.php
