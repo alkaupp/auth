@@ -10,10 +10,6 @@ class SignInCest
     private const USERNAME = 'nonexistent@example.com';
     private const PASSWORD = 'mypassword';
 
-    public function _before(ApiTester $I): void
-    {
-    }
-
     public function succeedInLoginAfterRegistration(ApiTester $I): void
     {
         $app = $I->authorizeApp('Cool app', 'https://example.com', 'mySecretKey');
@@ -27,5 +23,7 @@ class SignInCest
         );
         $I->sendPost('/signin', $body);
         $I->seeResponseCodeIs(HttpCode::OK);
+        $I->removeUser($user->userId());
+        $I->removeApp($app->appId());
     }
 }

@@ -4,6 +4,7 @@ namespace Auth\Tests\Helper;
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\ClientApplication;
 use Auth\Entity\User\User;
+use Auth\Entity\User\UserId;
 use Auth\Repository\PDOApplicationRepository;
 use Auth\Repository\PDOFactory;
 use Auth\Repository\PDOUserRepository;
@@ -26,5 +27,15 @@ class Api extends Module
             new PDOApplicationRepository(new PDOFactory())
         );
         return $register($username, $password, $appId->__toString());
+    }
+
+    public function removeApp(AppId $appId): void
+    {
+        (new PDOApplicationRepository(new PDOFactory()))->remove($appId);
+    }
+
+    public function removeUser(UserId $userId): void
+    {
+        (new PDOUserRepository(new PDOFactory()))->remove($userId);
     }
 }
