@@ -35,8 +35,7 @@ class HttpApplication
                 ["Content-Type" => "application/json"],
                 json_encode(["status" => 404, "error" => $e->getMessage()])
             );
-        }
-        catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $response = new Response(
                 400,
                 ["Content-Type" => "application/json"],

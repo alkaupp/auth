@@ -2,6 +2,8 @@
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
     <file>./src</file>
     <file>./tests</file>
+    <exclude-pattern>./tests/Api/</exclude-pattern>
+    <exclude-pattern>./tests/_support/</exclude-pattern>
     <rule ref="PSR2"/>
     <arg name="colors"/>
 </ruleset>
