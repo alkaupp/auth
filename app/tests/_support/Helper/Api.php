@@ -3,6 +3,7 @@ namespace Auth\Tests\Helper;
 
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\ClientApplication;
+use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
 use Auth\Entity\User\UserId;
 use Auth\Repository\PDOApplicationRepository;
@@ -37,5 +38,12 @@ class Api extends Module
     public function removeUser(UserId $userId): void
     {
         (new PDOUserRepository(new PDOFactory()))->remove($userId);
+    }
+
+    public function removeUserByUsername(string $username): void
+    {
+        $repo = new PDOUserRepository(new PDOFactory());
+        $user = $repo->getByEmailAddress(new EmailAddress($username));
+        $repo->remove($user->userId());
     }
 }
