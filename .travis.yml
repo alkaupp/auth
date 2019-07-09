@@ -11,5 +11,5 @@ script:
     - docker exec -it auth-php-server bash -c 'vendor/bin/phpstan analyse -l 5'
     - docker exec -it auth-php-server bash -c 'vendor/bin/phpcs'
     - docker exec -it auth-php-server bash -c 'vendor/bin/codecept build'
-    - docker exec -it auth-php-server bash -c 'vendor/bin/codecept run Api'
+    - docker exec -it auth-php-server bash -c 'vendor/bin/codecept run'
     - docker-compose down

@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Tests\_support\Helper;
+namespace Auth\Tests\Codeception;
 
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\ClientApplication;
@@ -14,7 +14,7 @@ use Auth\Service\Authorize;
 use Auth\Service\Register;
 use Codeception\Module;
 
-class Api extends Module
+class ApiHelper extends Module
 {
     public function authorizeApp(string $name, string $siteUrl, string $secretKey): ClientApplication
     {

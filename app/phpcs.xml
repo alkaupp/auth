@@ -3,7 +3,7 @@
     <file>./src</file>
     <file>./tests</file>
     <exclude-pattern>./tests/Api/</exclude-pattern>
-    <exclude-pattern>./tests/_support/</exclude-pattern>
+    <exclude-pattern>./tests/Codeception/</exclude-pattern>
     <rule ref="PSR2"/>
     <arg name="colors"/>
 </ruleset>

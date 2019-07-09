@@ -4,4 +4,4 @@ app/storage/*
 !app/storage/.gitkeep
 app/.env
 app/coverage
-app/tests/_output/
+app/tests/Codeception/_*
