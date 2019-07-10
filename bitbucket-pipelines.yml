@@ -1,4 +1,4 @@
-image: php:7.3
+image: php:7.4-rc
 options:
   docker: true
 
@@ -17,9 +17,9 @@ pipelines:
     - step:
         name: Build login to ECR
         image: atlassian/pipelines-awscli
-        script: 
+        script:
           - echo $(aws ecr get-login --no-include-email --region eu-north-1) > login.sh
-        artifacts: 
+        artifacts:
           - login.sh
     - step:
         name: Build image and push to ECR
