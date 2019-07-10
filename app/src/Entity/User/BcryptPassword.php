@@ -13,7 +13,7 @@ final class BcryptPassword implements Password
 
     public function __construct(string $password)
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT);
+        $this->password = password_hash($password, (int) PASSWORD_BCRYPT);
     }
 
     public function matches(string $password): bool
