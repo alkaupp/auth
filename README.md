@@ -19,7 +19,7 @@ Usage
 
 First authorize your application, so "Auth" can start providing authentication services for your application.
 
-POST /authorize
+### POST /authorize
 
 ```json
 {
@@ -43,7 +43,7 @@ provide when registering from your site. The response will look like this (obvio
 
 Now, you're users can start registering through "Auth" application. Notice that `userName` must be an email address.
 
-POST /register
+### POST /register
 
 ```json
 {
@@ -57,7 +57,7 @@ Successful registration will return a plain HTTP 200 response.
 
 After registration, users can sign in through "Auth" application.
 
-POST /signin
+### POST /signin
 
 ```json
 {
@@ -68,6 +68,18 @@ POST /signin
 ```
 
 Successful authentication will return a HTTP 200 response accompanied with a JWT-token.
+
+### POST /changepassword
+
+```json
+{
+  "userName": "me@example.com",
+  "oldPassword": "oldpassword",
+  "newPassword": "newpassword"
+}
+```
+
+Successful changing of password will return a plain HTTP 200.
 
 **NOTE**: Api documentation can be found in http://localhost:8001
 
