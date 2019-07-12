@@ -42,15 +42,6 @@ class RegisterTest extends TestCase
         $this->appRepository->store($this->app);
     }
 
-    public function testRegisterThrowsUserExistsError(): void
-    {
-        $register = new Register($this->userRepository, $this->appRepository);
-        $register(self::DEFAULT_USERNAME, self::DEFAULT_PASSWORD, self::APP_ID);
-        $this->expectException(RegisterException::class);
-        $this->expectExceptionMessage('Username is already taken.');
-        $register(self::DEFAULT_USERNAME, self::DEFAULT_PASSWORD, self::APP_ID);
-    }
-
     public function testRegisterReturnsUser(): void
     {
         $register = new Register($this->userRepository, $this->appRepository);

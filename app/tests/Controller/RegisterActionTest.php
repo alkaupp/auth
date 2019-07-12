@@ -37,11 +37,18 @@ class RegisterActionTest extends TestCase
             )
         );
         return [
-            [$repository, $this->getRequestBody($email, $password, self::APP_ID), 200],
-            [$repository, $this->getRequestBody($invalidEmail, $password, self::APP_ID), 400],
-            [$repository, $this->getRequestBody($email, $password, self::INVALID_APP_ID), 404],
-            [$repository, $this->getRequestBody($usedEmail, $password, self::APP_ID), 409],
-            [$repository, $this->getRequestBody($usedEmail, 'badpassword', self::APP_ID2), 401]
+            'Succeed with new user' => [
+                $repository, $this->getRequestBody($email, $password, self::APP_ID), 200
+            ],
+            'Fail with invalid email' => [
+                $repository, $this->getRequestBody($invalidEmail, $password, self::APP_ID), 400
+            ],
+            'Fail with nonexistent appId' => [
+                $repository, $this->getRequestBody($email, $password, self::INVALID_APP_ID), 404
+            ],
+            'Fail with adding app because invalid password' => [
+                $repository, $this->getRequestBody($usedEmail, 'badpassword', self::APP_ID2), 401
+            ]
         ];
     }
 
