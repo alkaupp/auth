@@ -28,6 +28,5 @@ interface UserRepository
      * @throws PersistingException
      */
     public function store(User $user): void;
-    public function exists(User $user): bool;
     public function remove(UserId $userId): void;
 }
