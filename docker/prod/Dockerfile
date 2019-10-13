@@ -1,0 +1,12 @@
+FROM php:7.3-apache
+RUN apt-get update \
+&& apt-get install -y libpq-dev curl zlib1g-dev libzip-dev \
+&& docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+&& docker-php-ext-install pdo pdo_pgsql zip \
+&& a2enmod rewrite
+COPY ./app /var/www/html
+WORKDIR /var/www/html
+RUN curl -sS https://getcomposer.org/installer | \
+            php -- --install-dir=/usr/bin/ --filename=composer
+
+RUN /usr/bin/composer install --no-dev

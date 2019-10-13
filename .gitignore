@@ -5,3 +5,5 @@ app/storage/*
 app/.env
 app/coverage
 app/tests/Codeception/_*
+.scannerwork
+sonar-project.properties

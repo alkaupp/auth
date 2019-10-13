@@ -7,17 +7,7 @@ services:
       context: ./
       dockerfile: ./docker/dev/Dockerfile
     ports:
-      - "8000:80"
-    volumes:
-      - ./app:/var/www/html
-    working_dir: /var/www/html
-  composer:
-    image: composer
-    container_name: composer
-    command: install --ignore-platform-reqs
-    volumes:
-      - ./app:/var/www/html
-    working_dir: /var/www/html
+      - "80:80"
   flyway:
     image: boxfuse/flyway:5.2.4
     command: -url=jdbc:postgresql://postgres/auth -user=auth -password=auth-app -connectRetries=60 migrate
