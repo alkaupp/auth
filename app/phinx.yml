@@ -1,0 +1,17 @@
+paths:
+    migrations: '%%PHINX_CONFIG_DIR%%/db/migrations'
+    seeds: '%%PHINX_CONFIG_DIR%%/db/seeds'
+
+environments:
+    default_migration_table: phinxlog
+    default_environment: default
+    default:
+        adapter: '%%AUTH_DB_DRIVER%%'
+        host: '%%AUTH_DB_HOST%%'
+        name: '%%AUTH_DB_NAME%%'
+        user: '%%AUTH_DB_USER%%'
+        pass: '%%AUTH_DB_PASSWORD%%'
+        port: '%%AUTH_DB_PORT%%'
+        charset: utf8
+
+version_order: creation
