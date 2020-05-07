@@ -12,12 +12,12 @@ return [
         'default_migration_table' => 'migrations',
         'default_environment' => 'default',
         'default' => [
-            'adapter' => '%%PHINX_AUTH_DB_DRIVER%%',
-            'host' => '%%PHINX_AUTH_DB_HOST%%',
-            'name' => '%%PHINX_AUTH_DB_NAME%%',
-            'user' => '%%PHINX_AUTH_DB_USER%%',
-            'pass' => '%%PHINX_AUTH_DB_PASSWORD%%',
-            'port' => '%%PHINX_AUTH_DB_PORT%%',
+            'adapter' => $_ENV['AUTH_DB_DRIVER'],
+            'host' => $_ENV['AUTH_DB_HOST'],
+            'name' => $_ENV['AUTH_DB_NAME'],
+            'user' => $_ENV['AUTH_DB_USER'],
+            'pass' => $_ENV['AUTH_DB_PASSWORD'],
+            'port' => $_ENV['AUTH_DB_PORT'],
             'charset' => 'utf8',
         ]
     ],

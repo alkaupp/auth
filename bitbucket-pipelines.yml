@@ -14,20 +14,20 @@ pipelines:
           - vendor/bin/phpunit
           - vendor/bin/phpstan analyse -l 5
           - vendor/bin/phpcs
-    - step:
-        name: Build login to ECR
-        image: atlassian/pipelines-awscli
-        script:
-          - echo $(aws ecr get-login --no-include-email --region eu-north-1) > login.sh
-        artifacts:
-          - login.sh
-    - step:
-        name: Build image and push to ECR
-        caches:
-          - docker
-        script:
-          - sh login.sh
-          - rm docker-compose.yml
-          - mv docker-compose.prod.yml docker-compose.yml
-          - docker image build . -f ./docker/prod/Dockerfile -t $ECR_REPOSITORY:version-$BITBUCKET_COMMIT
-          - docker push $ECR_REPOSITORY:version-$BITBUCKET_COMMIT
+#    - step:
+#        name: Build login to ECR
+#        image: atlassian/pipelines-awscli
+#        script:
+#          - echo $(aws ecr get-login --no-include-email --region eu-north-1) > login.sh
+#        artifacts:
+#          - login.sh
+#    - step:
+#        name: Build image and push to ECR
+#        caches:
+#          - docker
+#        script:
+#          - sh login.sh
+#          - rm docker-compose.yml
+#          - mv docker-compose.prod.yml docker-compose.yml
+#          - docker image build . -f ./docker/prod/Dockerfile -t $ECR_REPOSITORY:version-$BITBUCKET_COMMIT
+#          - docker push $ECR_REPOSITORY:version-$BITBUCKET_COMMIT
