@@ -9,4 +9,4 @@ extensions:
     enabled:
         - Codeception\Extension\RunFailed
 settings:
-    bootstrap: ../../codeceptionBootstrap.php
+    bootstrap: ../../bootstrap.php

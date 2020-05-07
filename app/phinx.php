@@ -1,12 +1,12 @@
 <?php
 
-require __DIR__ . '/codeceptionBootstrap.php';
+require __DIR__ . '/bootstrap.php';
 
 return [
     'paths' => [
         'migrations' => '%%PHINX_CONFIG_DIR%%/db/migrations',
         'seeds' => '%%PHINX_CONFIG_DIR%%/db/seeds',
-        'bootstrap' => '%%PHINX_CONFIG_DIR%%/codeceptionBootstrap.php'
+        'bootstrap' => '%%PHINX_CONFIG_DIR%%/bootstrap.php'
     ],
     'environments' => [
         'default_migration_table' => 'migrations',
