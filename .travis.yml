@@ -3,7 +3,6 @@ services:
 before_script:
     - sudo service postgresql stop
 script:
-    - docker-compose pull
     - docker-compose build
     - docker-compose run composer install --ignore-platform-reqs
     - docker-compose up -d

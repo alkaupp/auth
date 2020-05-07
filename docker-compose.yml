@@ -11,6 +11,8 @@ services:
     volumes:
       - ./app:/var/www/html
     working_dir: /var/www/html
+    depends_on:
+      - postgres
   composer:
     image: composer
     container_name: composer
