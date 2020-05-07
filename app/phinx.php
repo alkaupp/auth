@@ -9,7 +9,7 @@ return [
         'bootstrap' => '%%PHINX_CONFIG_DIR%%/codeceptionBootstrap.php'
     ],
     'environments' => [
-        'default_migration_table' => 'phinxlog',
+        'default_migration_table' => 'migrations',
         'default_environment' => 'default',
         'default' => [
             'adapter' => '%%PHINX_AUTH_DB_DRIVER%%',
