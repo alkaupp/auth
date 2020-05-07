@@ -18,13 +18,6 @@ services:
     volumes:
       - ./app:/var/www/html
     working_dir: /var/www/html
-  flyway:
-    image: boxfuse/flyway:5.2.4
-    command: -url=jdbc:postgresql://postgres/auth -user=auth -password=auth-app -connectRetries=60 migrate
-    volumes:
-      - ./docker/flyway/:/flyway/sql
-    depends_on:
-      - postgres
   postgres:
     image: postgres:11.2
     container_name: postgresdatabase
