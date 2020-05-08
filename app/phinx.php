@@ -2,6 +2,9 @@
 
 require __DIR__ . '/bootstrap.php';
 
+
+$db = parse_url(getenv('DATABASE_URL'));
+
 return [
     'paths' => [
         'migrations' => '%%PHINX_CONFIG_DIR%%/db/migrations',
@@ -12,12 +15,12 @@ return [
         'default_migration_table' => 'migrations',
         'default_environment' => 'default',
         'default' => [
-            'adapter' => $_ENV['AUTH_DB_DRIVER'],
-            'host' => $_ENV['AUTH_DB_HOST'],
-            'name' => $_ENV['AUTH_DB_NAME'],
-            'user' => $_ENV['AUTH_DB_USER'],
-            'pass' => $_ENV['AUTH_DB_PASSWORD'],
-            'port' => $_ENV['AUTH_DB_PORT'],
+            'adapter' => 'pgsql',
+            'host' => $db['host'],
+            'name' => ltrim($db['path'], '/'),
+            'user' => $db['user'],
+            'pass' => $db['pass'],
+            'port' => $db['port'],
             'charset' => 'utf8',
         ]
     ],
