@@ -1,0 +1,7 @@
+build:
+  docker:
+    web: docker/prod/Dockerfile
+release:
+  command:
+    - ./vendor/bin/phinx migrate
+  image: web
