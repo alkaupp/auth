@@ -1,6 +1,7 @@
 build:
   docker:
     web: docker/prod/Dockerfile
-run:
-  web:
-    - vendor/bin/phinx migrate
+release:
+  command:
+    - ./vendor/bin/phinx migrate
+  image: web
