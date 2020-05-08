@@ -1,8 +1,5 @@
 <?php
 
-require __DIR__ . '/bootstrap.php';
-
-
 $db = parse_url(getenv('DATABASE_URL'));
 
 return [
