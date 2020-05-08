@@ -1,6 +1,6 @@
 build:
   docker:
-    web: docker/prod/Dockerfile.web
+    web: ./Dockerfile.web
 release:
   command:
     - ./vendor/bin/phinx migrate
