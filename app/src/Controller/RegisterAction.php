@@ -28,7 +28,7 @@ final class RegisterAction
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $body = json_decode($request->getBody()->__toString(), true);
+            $body = json_decode($request->getBody()->__toString(), true, 512, JSON_THROW_ON_ERROR);
             $email = $body['userName'];
             $password = $body['password'];
             $appId = $body['appId'];

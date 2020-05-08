@@ -21,14 +21,14 @@ class AuthorizeAction
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $authorize = new Authorize($this->appRepository);
-        $body = json_decode((string) $request->getBody(), true);
+        $body = json_decode((string) $request->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $appName = $body['appName'];
         $siteUrl = $body['siteUrl'];
         $secretKey = $body['secretKey'];
         return new Response(
             200,
             ['Content-Type' => 'application/json'],
-            json_encode($authorize($appName, $siteUrl, $secretKey))
+            json_encode($authorize($appName, $siteUrl, $secretKey), JSON_THROW_ON_ERROR, 512)
         );
     }
 }
