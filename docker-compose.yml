@@ -13,8 +13,8 @@ services:
     working_dir: /var/www/html
     depends_on:
       - postgres
-    environment:
-      DATABASE_URL: postgres://auth:auth-app@postgresdatabase:5432/auth
+    env_file:
+      - ./app/.env
   composer:
     image: composer
     container_name: composer
