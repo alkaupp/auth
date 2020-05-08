@@ -3,10 +3,10 @@ services:
 before_script:
     - sudo service postgresql stop
 script:
+    - cp app/.env.example app/.env
     - docker-compose build
     - docker-compose run composer install --ignore-platform-reqs
     - docker-compose up -d
-    - cp app/.env.example app/.env
     - docker exec -it auth-php-server bash -c 'vendor/bin/phinx migrate'
     - docker exec -it auth-php-server bash -c 'vendor/bin/phpunit'
     - docker exec -it auth-php-server bash -c 'vendor/bin/phpstan analyse -l 5'
