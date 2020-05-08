@@ -5,9 +5,11 @@ RUN apt-get update \
 && docker-php-ext-install pdo pdo_pgsql zip \
 && a2enmod rewrite
 COPY ./app /var/www/html
+COPY ./docker/apache/conf/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./docker/apache/conf/ports.conf /etc/apache2/ports.conf
+CMD docker-php-entrypoint apache2-foreground
 WORKDIR /var/www/html
 RUN curl -sS https://getcomposer.org/installer | \
             php -- --install-dir=/usr/bin/ --filename=composer
 
 RUN /usr/bin/composer install --no-dev
-CMD sed -i "s/80/$PORT/g" /etc/apache2/sites-enabled/000-default.conf /etc/apache2/ports.conf && docker-php-entrypoint apache2-foreground
