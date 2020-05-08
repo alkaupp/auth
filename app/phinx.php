@@ -6,7 +6,6 @@ return [
     'paths' => [
         'migrations' => '%%PHINX_CONFIG_DIR%%/db/migrations',
         'seeds' => '%%PHINX_CONFIG_DIR%%/db/seeds',
-        'bootstrap' => '%%PHINX_CONFIG_DIR%%/bootstrap.php'
     ],
     'environments' => [
         'default_migration_table' => 'migrations',
