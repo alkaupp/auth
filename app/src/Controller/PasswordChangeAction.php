@@ -23,7 +23,7 @@ final class PasswordChangeAction
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         $passwordChange = new PasswordChange($this->userRepository);
-        $body = json_decode((string) $request->getBody(), true);
+        $body = json_decode((string) $request->getBody(), true, 512, JSON_THROW_ON_ERROR);
         try {
             $passwordChange(trim($body['userName']), trim($body['oldPassword']), $body['newPassword']);
             return new Response(200);
