@@ -9,15 +9,15 @@ class PDOFactory
 {
     public function build(): PDO
     {
-        return new PDO(
-            sprintf(
-                "%s:host=%s;dbname=%s",
-                getenv("AUTH_DB_DRIVER"),
-                getenv("AUTH_DB_HOST"),
-                getenv("AUTH_DB_NAME")
-            ),
-            getenv("AUTH_DB_USER"),
-            getenv("AUTH_DB_PASSWORD")
-        );
+        $db = parse_url(getenv('DATABASE_URL'));
+
+        return new PDO('pgsql:' . sprintf(
+                'host=%s;port=%s;user=%s;password=%s;dbname=%s',
+                $db['host'],
+                $db['port'],
+                $db['user'],
+                $db['pass'],
+                ltrim($db['path'], '/')
+            ));
     }
 }
