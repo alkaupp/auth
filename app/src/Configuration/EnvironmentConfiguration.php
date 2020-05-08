@@ -16,7 +16,7 @@ class EnvironmentConfiguration implements Configuration
 
     public function configure(): void
     {
-        $dotEnv = new Dotenv();
-        $dotEnv->load($this->dotEnvPath);
+        //$dotEnv = new Dotenv();
+        //$dotEnv->load($this->dotEnvPath);
     }
 }
