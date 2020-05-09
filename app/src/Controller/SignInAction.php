@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Auth\Controller;
@@ -12,6 +13,7 @@ use Auth\Service\SignIn;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+
 use function json_decode;
 use function trim;
 

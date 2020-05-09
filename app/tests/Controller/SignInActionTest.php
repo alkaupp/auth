@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Auth\Tests\Controller;
@@ -6,8 +7,8 @@ namespace Auth\Tests\Controller;
 use Auth\Controller\SignInAction;
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\Applications;
-use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\Application\ClientApplication;
+use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
 use Auth\Repository\ApplicationRepository;
@@ -18,9 +19,9 @@ use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
 
 use function json_encode;
-use Psr\Http\Message\ResponseInterface;
 
 class SignInActionTest extends TestCase
 {
