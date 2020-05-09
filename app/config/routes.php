@@ -7,8 +7,8 @@ use Auth\Controller\RegisterAction;
 use Auth\Controller\SignInAction;
 
 return [
-    ["POST", "/authorize", AuthorizeAction::class],
-    ["POST", "/signin", SignInAction::class],
-    ["POST", "/register", RegisterAction::class],
-    ["POST", "/changepassword", PasswordChangeAction::class]
+    ['POST', '/authorize', AuthorizeAction::class],
+    ['POST', '/signin', SignInAction::class],
+    ['POST', '/register', RegisterAction::class],
+    ['POST', '/changepassword', PasswordChangeAction::class],
 ];
