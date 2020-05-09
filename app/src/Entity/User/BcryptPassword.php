@@ -1,10 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Auth\Entity\User;
 
 use function password_hash;
 use function password_verify;
+
 use const PASSWORD_BCRYPT;
 
 final class BcryptPassword implements Password
