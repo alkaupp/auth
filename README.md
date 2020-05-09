@@ -9,7 +9,8 @@ Running the application
 -----------------------
 
 ```
-docker-compose up
+cp ./app/.env.example ./app/.enc
+docker-compose up -d
 ```
 
 Auth application will run in http://localhost:8000.
