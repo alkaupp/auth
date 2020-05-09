@@ -5,8 +5,9 @@ before_script:
 script:
     - cp app/.env.example app/.env
     - docker-compose build
+    - docker-compose up -d postgres
     - docker-compose run composer install --ignore-platform-reqs
-    - docker-compose up -d
+    - docker-compose up -d php-server
     - docker exec -it auth-php-server bash -c 'vendor/bin/phinx migrate'
     - docker exec -it auth-php-server bash -c 'vendor/bin/phpunit'
     - docker exec -it auth-php-server bash -c 'vendor/bin/phpstan analyse -l 5'
