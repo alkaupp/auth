@@ -9,7 +9,7 @@ Running the application
 -----------------------
 
 ```
-cp ./app/.env.example ./app/.enc
+cp ./app/.env.example ./app/.env
 docker-compose up -d
 ```
 
