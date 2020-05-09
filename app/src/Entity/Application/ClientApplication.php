@@ -8,6 +8,7 @@ use Auth\Entity\User\User;
 use JsonSerializable;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key;
 use Ramsey\Uuid\Uuid;
 
 class ClientApplication implements JsonSerializable
@@ -71,15 +72,14 @@ class ClientApplication implements JsonSerializable
     public function createTokenFor(User $user): AuthenticationToken
     {
         return new JwtToken(
-            (new Builder())->setIssuer(getenv('AUTH_DB_JWT_ISSUER'))
-            ->setAudience($this->site)
-            ->setId(Uuid::uuid4()->toString(), true) // Configures the id (jti claim), replicating as a header item
-            ->setIssuedAt(time())
-            ->setNotBefore(time())
-            ->setExpiration(time() + 3600)
-            ->set('userName', (string) $user->email())
-            ->sign(new Sha256(), $this->secretKey)
-            ->getToken()
+            (new Builder())->issuedBy(getenv('AUTH_DB_JWT_ISSUER'))
+            ->permittedFor($this->site)
+            ->identifiedBy(Uuid::uuid4()->toString(), true)
+            ->issuedAt(time())
+            ->canOnlyBeUsedAfter(time())
+            ->expiresAt(time() + 3600)
+            ->withClaim('userName', (string) $user->email())
+            ->getToken(new Sha256(), new Key($this->secretKey))
         );
     }
 }
