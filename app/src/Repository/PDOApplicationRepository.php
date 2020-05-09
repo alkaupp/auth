@@ -26,7 +26,7 @@ class PDOApplicationRepository implements ApplicationRepository
         $sql = 'SELECT * FROM application WHERE id=:id;';
         $statement = $this->pdo->prepare($sql);
         $statement->execute(['id' => $appId->__toString()]);
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $result = array_filter((array) $statement->fetchAll(PDO::FETCH_ASSOC));
         if (count($result) > 0) {
             $application = $result[0];
             return ClientApplication::fromArray($application);
