@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Auth\Entity\Application;
@@ -72,7 +73,7 @@ class ClientApplication implements JsonSerializable
     public function createTokenFor(User $user): AuthenticationToken
     {
         return new JwtToken(
-            (new Builder())->issuedBy(getenv('AUTH_DB_JWT_ISSUER'))
+            (new Builder())->issuedBy((string) getenv('AUTH_DB_JWT_ISSUER'))
             ->permittedFor($this->site)
             ->identifiedBy(Uuid::uuid4()->toString(), true)
             ->issuedAt(time())
