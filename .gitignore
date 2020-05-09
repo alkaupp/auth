@@ -7,3 +7,4 @@ app/coverage
 app/tests/Codeception/_*
 .scannerwork
 sonar-project.properties
+.phpunit.result.cache

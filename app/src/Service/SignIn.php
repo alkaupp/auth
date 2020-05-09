@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Auth\Service;
 
 use Auth\AuthenticationException;
+use Auth\AuthorizationException;
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\AuthenticationToken;
 use Auth\Entity\User\EmailAddress;
-use Auth\AuthorizationException;
 use Auth\Repository\ApplicationRepository;
 use Auth\Repository\NotFoundException;
 use Auth\Repository\UserRepository;

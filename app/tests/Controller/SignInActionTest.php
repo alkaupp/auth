@@ -31,7 +31,7 @@ class SignInActionTest extends TestCase
     private ApplicationRepository $appRepository;
     private ClientApplication $app;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->userRepository = new InMemoryUserRepository();
         $this->app = new ClientApplication(new AppId(), 'app', 'https://example.com', self::APP_SECRET);

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Auth\Repository;
 
 use Auth\Entity\User\EmailAddress;
-use Auth\Entity\User\UserId;
 use Auth\Entity\User\User;
+use Auth\Entity\User\UserId;
 
 interface UserRepository
 {

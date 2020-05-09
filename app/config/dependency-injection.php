@@ -1,7 +1,7 @@
 <?php
+
 declare(strict_types=1);
 
-use Auth\Configuration\EnvironmentConfiguration;
 use Auth\Configuration\RouteConfiguration;
 use Auth\Controller\AuthorizeAction;
 use Auth\Controller\PasswordChangeAction;
@@ -12,13 +12,14 @@ use Auth\Repository\PDOApplicationRepository;
 use Auth\Repository\PDOFactory;
 use Auth\Repository\PDOUserRepository;
 use Auth\Repository\UserRepository;
-use function DI\create;
-use function DI\get;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Nyholm\Psr7Server\ServerRequestCreatorInterface;
+
+use function DI\create;
+use function DI\get;
 
 return [
     ApplicationStrategy::class => create(ApplicationStrategy::class),
@@ -33,8 +34,6 @@ return [
             new Psr17Factory(),
             new Psr17Factory()
         ),
-    EnvironmentConfiguration::class => create(EnvironmentConfiguration::class)
-        ->constructor(__DIR__ . "/../.env"),
     ApplicationRepository::class => create(PDOApplicationRepository::class)
         ->constructor(create(PDOFactory::class)),
     PDOUserRepository::class => create(PDOUserRepository::class)

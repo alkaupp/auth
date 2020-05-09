@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Auth\Tests\Service;
 
 use Auth\AuthenticationException;
+use Auth\AuthorizationException;
 use Auth\Entity\Application\AppId;
 use Auth\Entity\Application\Applications;
 use Auth\Entity\Application\AuthenticationToken;
@@ -12,7 +13,6 @@ use Auth\Entity\Application\ClientApplication;
 use Auth\Entity\User\BcryptPassword;
 use Auth\Entity\User\EmailAddress;
 use Auth\Entity\User\User;
-use Auth\AuthorizationException;
 use Auth\Repository\ApplicationRepository;
 use Auth\Repository\InMemoryApplicationRepository;
 use Auth\Repository\InMemoryUserRepository;
@@ -27,7 +27,7 @@ class SignInTest extends TestCase
     private ApplicationRepository $appRepository;
     private ClientApplication $app;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->userRepository = new InMemoryUserRepository();
         $this->appRepository = new InMemoryApplicationRepository();
