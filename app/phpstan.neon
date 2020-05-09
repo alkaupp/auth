@@ -11,3 +11,4 @@ parameters:
     - tests/Api/RegisterCest.php
     - tests/Api/AuthorizeCest.php
     - tests/Api/PasswordChangeCest.php
+    - tests/Api/FrontpageCest.php
