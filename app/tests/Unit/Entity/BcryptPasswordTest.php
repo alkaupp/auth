@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\Tests\Entity;
+namespace Auth\Tests\Unit\Entity;
 
 use Auth\Entity\User\BcryptPassword;
 use PHPUnit\Framework\TestCase;

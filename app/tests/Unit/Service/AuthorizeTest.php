@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\Tests\Service;
+namespace Auth\Tests\Unit\Service;
 
 use Auth\Entity\Application\ClientApplication;
 use Auth\Repository\InMemoryApplicationRepository;

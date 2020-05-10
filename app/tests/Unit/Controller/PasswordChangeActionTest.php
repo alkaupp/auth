@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\Tests\Controller;
+namespace Auth\Tests\Unit\Controller;
 
 use Auth\Controller\PasswordChangeAction;
 use Auth\Entity\Application\Applications;

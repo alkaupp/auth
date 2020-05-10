@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Auth\Tests\Service;
+namespace Auth\Tests\Unit\Service;
 
 use Auth\AuthenticationException;
 use Auth\Entity\Application\AppId;
