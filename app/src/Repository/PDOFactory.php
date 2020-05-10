@@ -12,13 +12,17 @@ class PDOFactory
     {
         $db = parse_url(getenv('DATABASE_URL'));
 
-        return new PDO('pgsql:' . sprintf(
-            'host=%s;port=%s;user=%s;password=%s;dbname=%s',
-            $db['host'],
-            $db['port'],
+        return new PDO(
+            sprintf(
+                '%s:host=%s;port=%s;dbname=%s',
+                'pgsql',
+                $db['host'],
+                $db['port'],
+                ltrim($db['path'], '/')
+            ),
             $db['user'],
             $db['pass'],
-            ltrim($db['path'], '/')
-        ));
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
     }
 }
