@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Auth\Application;
 
-use Auth\Server\RequestSender;
+use Auth\Server\ResponseSender;
 use InvalidArgumentException;
 use League\Route\Http\Exception\NotFoundException;
 use League\Route\Router;
@@ -28,24 +28,21 @@ class HttpApplication
         try {
             $response = $this->router->dispatch($this->requestCreator->fromGlobals());
         } catch (NotFoundException $e) {
-            $response = new Response(
-                404,
-                ['Content-Type' => 'application/json'],
-                json_encode(['status' => 404, 'error' => $e->getMessage()], JSON_THROW_ON_ERROR, 512)
-            );
+            $response = $this->createErrorResponse(404, $e->getMessage());
         } catch (InvalidArgumentException $e) {
-            $response = new Response(
-                400,
-                ['Content-Type' => 'application/json'],
-                json_encode(['status' => 400, 'error' => $e->getMessage()], JSON_THROW_ON_ERROR, 512)
-            );
+            $response = $this->createErrorResponse(400, $e->getMessage());
         } catch (Throwable $e) {
-            $response = new Response(
-                500,
-                ['Content-Type' => 'application/json'],
-                json_encode(['status' => 500, 'error' => $e->getMessage()], JSON_THROW_ON_ERROR, 512)
-            );
+            $response = $this->createErrorResponse(500, $e->getMessage());
         }
-        (new RequestSender())->send($response);
+        (new ResponseSender($response))->send();
+    }
+
+    private function createErrorResponse(int $statusCode, string $errorMessage): Response
+    {
+        return new Response(
+            $statusCode,
+            ['Content-Type' => 'application/json'],
+            json_encode(['status' => $statusCode, 'error' => $errorMessage], JSON_THROW_ON_ERROR, 512)
+        );
     }
 }

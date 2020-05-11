@@ -9,35 +9,38 @@ use Psr\Http\Message\StreamInterface;
 
 final class ResponseSender
 {
-    public function send(ResponseInterface $response): void
+    private ResponseInterface $response;
+
+    public function __construct(ResponseInterface $response)
     {
-        $this->sendBasicHeader($response);
-        $this->sendHeaders($response->getHeaders(), $response->getStatusCode());
-        $this->sendContent($response->getBody());
+        $this->response = $response;
     }
 
-    private function sendBasicHeader(ResponseInterface $response): void
+    public function send(): void
+    {
+        $this->sendHeaders();
+        $this->sendContent($this->response->getBody());
+    }
+
+    private function sendHeaders(): void
     {
         header(
             sprintf(
                 'HTTP/%s %s %s',
-                $response->getProtocolVersion(),
-                $response->getStatusCode(),
-                $response->getReasonPhrase()
+                $this->response->getProtocolVersion(),
+                $this->response->getStatusCode(),
+                $this->response->getReasonPhrase()
             ),
             true,
-            $response->getStatusCode()
+            $this->response->getStatusCode()
         );
-    }
 
-    private function sendHeaders(array $headers, int $statusCode): void
-    {
         if (headers_sent()) {
             return;
         }
-        foreach ($headers as $header => $values) {
+        foreach ($this->response->getHeaders() as $header => $values) {
             foreach ($values as $value) {
-                header(sprintf('%s: %s', $header, $value), false, $statusCode);
+                header(sprintf('%s: %s', $header, $value), false, $this->response->getStatusCode());
             }
         }
     }
