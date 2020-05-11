@@ -19,10 +19,15 @@ class AuthorizeActionTest extends TestCase
             'siteUrl' => 'https://example.com',
             'secretKey' => 'appSecretKey'
         ];
-        $request = new ServerRequest('POST', '/authorize', ['Content-Type' => 'application/json'], json_encode($body));
+        $request = new ServerRequest(
+            'POST',
+            '/authorize',
+            ['Content-Type' => 'application/json'],
+            json_encode($body, JSON_THROW_ON_ERROR, 512)
+        );
         $response = $action($request);
         $this->assertSame(200, $response->getStatusCode());
-        $resultBody = json_decode((string) $response->getBody(), true);
+        $resultBody = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertArrayHasKey('appId', $resultBody);
         unset($resultBody['appId']);
         $this->assertEquals($body, $resultBody);

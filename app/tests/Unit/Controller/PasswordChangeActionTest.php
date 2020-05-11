@@ -51,7 +51,9 @@ class PasswordChangeActionTest extends TestCase
                 'userName' => self::DEFAULT_USERNAME,
                 'oldPassword' => self::DEFAULT_PASSWORD,
                 'newPassword' => 'sterces'
-            ]
+            ],
+            JSON_THROW_ON_ERROR,
+            512
         );
     }
 

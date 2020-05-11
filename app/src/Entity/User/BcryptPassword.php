@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Auth\Entity\User;
 
+use InvalidArgumentException;
+
 use function password_hash;
 use function password_verify;
 
@@ -15,7 +17,11 @@ final class BcryptPassword implements Password
 
     public function __construct(string $password)
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT);
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+        if ($hash === false) {
+            throw new InvalidArgumentException('Failed hashing the password.');
+        }
+        $this->password = $hash;
     }
 
     public function matches(string $password): bool

@@ -104,7 +104,7 @@ SQL;
         $sql .= sprintf(' WHERE %s;', $whereClause);
         $statement = $this->pdo->prepare($sql);
         $statement->execute($parameters);
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC) ?: [];
         if (count($result) > 0) {
             $user = $result[0];
             $user['applications'] = $this->getApplicationsFor(UserId::fromString($user['id']));
@@ -130,7 +130,7 @@ FROM application
 SQL;
         $statement = $this->pdo->prepare($sql);
         $statement->execute(['userId' => $userId->__toString()]);
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
     public function remove(UserId $userId): void

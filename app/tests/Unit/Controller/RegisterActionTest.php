@@ -75,6 +75,14 @@ class RegisterActionTest extends TestCase
 
     private function getRequestBody(string $userName, string $password, string $appId): string
     {
-        return json_encode(['userName' => $userName, 'password' => $password, 'appId' => $appId]);
+        return json_encode(
+            [
+                'userName' => $userName,
+                'password' => $password,
+                'appId' => $appId
+            ],
+            JSON_THROW_ON_ERROR,
+            512
+        );
     }
 }

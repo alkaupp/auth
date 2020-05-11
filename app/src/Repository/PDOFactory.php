@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace Auth\Repository;
 
+use ParseError;
 use PDO;
 
 class PDOFactory
 {
     public function build(): PDO
     {
-        $db = parse_url(getenv('DATABASE_URL'));
+        $db = (array) parse_url($_ENV['DATABASE_URL'] ?? '');
+        foreach (['host', 'port', 'path', 'user', 'pass'] as $key) {
+            if (!array_key_exists($key, $db)) {
+                throw new ParseError('Failed parsing DATABASE_URL');
+            }
+        }
 
         return new PDO(
             sprintf(

@@ -47,7 +47,9 @@ class SignInActionTest extends TestCase
                 'userName' => 'frank@example.com',
                 'password' => 'secrets',
                 'appId' => $this->app->appId()->__toString()
-            ]
+            ],
+            JSON_THROW_ON_ERROR,
+            512
         );
         $request = new ServerRequest('POST', '/signin', ['Content-Type' => 'application/json'], (string) $body);
         $response = $action($request);
@@ -91,7 +93,9 @@ class SignInActionTest extends TestCase
                 'userName' => 'frank@example.com',
                 'password' => 'secrets',
                 'appId' => $this->app->appId()->__toString()
-            ]
+            ],
+            JSON_THROW_ON_ERROR,
+            512
         );
         $request = new ServerRequest('POST', '/signin', ['Content-Type' => 'application/json'], $body);
         return $action($request);
