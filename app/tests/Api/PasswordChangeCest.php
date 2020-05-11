@@ -51,7 +51,9 @@ class PasswordChangeCest
                 'userName' => $username,
                 'oldPassword' => $oldPassword,
                 self::NEW_PASSWORD => $newPassword
-            ]
+            ],
+            JSON_THROW_ON_ERROR,
+            512
         );
     }
 

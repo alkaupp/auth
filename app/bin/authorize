@@ -38,7 +38,7 @@ class AuthorizeCommand extends Command
             $useCase = new Authorize($this->repository);
             [$name, $siteUrl, $secretKey] = array_values($input->getArguments());
             $app = $useCase($name, $siteUrl, $secretKey);
-            $output->writeln(json_encode($app));
+            $output->writeln(json_encode($app, JSON_THROW_ON_ERROR, 512));
         } catch (Throwable $throwable) {
             $output->writeln(sprintf('<error>Command failed: %s</error>', $throwable->getMessage()));
         }

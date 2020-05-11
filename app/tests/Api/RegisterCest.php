@@ -51,7 +51,9 @@ class RegisterCest
                 'userName' => $username,
                 'password' => $password,
                 'appId' => $appId
-            ]
+            ],
+            JSON_THROW_ON_ERROR,
+            512
         );
     }
     public function succeedInRegistering(ApiTester $I): void
