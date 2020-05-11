@@ -1,7 +1,7 @@
 includes:
   - vendor/phpstan/phpstan-phpunit/extension.neon
 parameters:
-  level: 5
+  level: max
   paths: ["src", "tests"]
   excludes_analyse:
     - tests/Codeception/_support/ApiTester.php
