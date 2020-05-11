@@ -23,6 +23,9 @@ class RegisterActionTest extends TestCase
     private const APP_ID2 = '5d4f1c75-7032-11e9-8afd-ccf04cab7547';
     private const INVALID_APP_ID = '54036de4-652a-11e9-8888-c5d1c66dcec4';
 
+    /**
+     * @return array<string, array{InMemoryUserRepository, string, int}>
+     */
     public function registerDataProvider(): array
     {
         $password = 'youneverguess';

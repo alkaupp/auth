@@ -94,7 +94,7 @@ SQL;
 
     /**
      * @param string $whereClause
-     * @param array $parameters
+     * @param array<string, mixed> $parameters
      * @return User
      * @throws NotFoundException
      */
@@ -113,6 +113,10 @@ SQL;
         throw new NotFoundException('User not found with');
     }
 
+    /**
+     * @param UserId $userId
+     * @return array<array{'app_id': string, 'app_name': string, 'app_secretkey': string}>
+     */
     private function getApplicationsFor(UserId $userId): array
     {
         $sql = <<<SQL

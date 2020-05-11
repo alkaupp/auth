@@ -9,16 +9,25 @@ use Iterator;
 use IteratorAggregate;
 use JsonSerializable;
 
+/**
+ * @implements IteratorAggregate<ClientApplication>
+ */
 class Applications implements IteratorAggregate, JsonSerializable
 {
     /** @var ClientApplication[] */
     private array $applications;
 
+    /**
+     * @param array<ClientApplication> $applications
+     */
     public function __construct(array $applications = [])
     {
         $this->addApplications($applications);
     }
 
+    /**
+     * @param array<ClientApplication> $applications
+     */
     private function addApplications(array $applications): void
     {
         foreach ($applications as $application) {
@@ -31,17 +40,21 @@ class Applications implements IteratorAggregate, JsonSerializable
         $this->applications[] = $application;
     }
 
+    /**
+     * @return Iterator<ClientApplication>
+     */
     public function getIterator(): Iterator
     {
         return new ArrayIterator($this->applications);
     }
 
+    /**
+     * @return array<array>
+     */
     public function jsonSerialize(): array
     {
         return array_map(
-            function (ClientApplication $application): array {
-                return $application->jsonSerialize();
-            },
+            fn(ClientApplication $application): array => $application->jsonSerialize(),
             $this->applications
         );
     }

@@ -25,7 +25,7 @@ final class PasswordChange
      * @throws NotFoundException
      * @throws AuthenticationException
      */
-    public function __invoke(string $username, string $oldPassword, string $newPassword)
+    public function __invoke(string $username, string $oldPassword, string $newPassword): void
     {
         $user = $this->userRepository->getByEmailAddress(new EmailAddress($username));
         $user->changePassword($oldPassword, $newPassword);

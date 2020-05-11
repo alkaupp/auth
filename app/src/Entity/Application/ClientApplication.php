@@ -42,6 +42,10 @@ class ClientApplication implements JsonSerializable
         return $this->appId->equals($application->appId);
     }
 
+    /**
+     * @param array{'id': string, 'name': string, 'site': string, 'secretkey': string} $application
+     * @return ClientApplication
+     */
     public static function fromArray(array $application): self
     {
         return new self(
@@ -52,6 +56,9 @@ class ClientApplication implements JsonSerializable
         );
     }
 
+    /**
+     * @return array{'appId': string, 'appName': string, 'siteUrl': string, 'secretKey': string}
+     */
     public function jsonSerialize(): array
     {
         return [

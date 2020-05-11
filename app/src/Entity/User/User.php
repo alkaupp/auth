@@ -26,6 +26,10 @@ final class User
         $this->authenticated = false;
     }
 
+    /**
+     * @param array{'applications': array, 'email': string, 'password': string, 'id': string} $user
+     * @return User
+     */
     public static function fromArray(array $user): self
     {
         $applications = array_map(
@@ -77,6 +81,9 @@ final class User
         return $this->emailAddress->equals($user->emailAddress);
     }
 
+    /**
+     * @return array{'id': string, 'email': string, 'password': string, 'applications': array}
+     */
     public function toArray(): array
     {
         return [
