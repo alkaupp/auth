@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command;
 
 class ConsoleApplication
 {
-    private $application;
+    private Application $application;
 
     public function __construct(Application $application)
     {

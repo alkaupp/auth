@@ -12,8 +12,8 @@ use Symfony\Component\Console\Application;
 
 class ApplicationFactory
 {
-    private $container;
-    private $isConfigured = false;
+    private ContainerInterface $container;
+    private bool $isConfigured = false;
 
     public function __construct(ContainerInterface $container)
     {

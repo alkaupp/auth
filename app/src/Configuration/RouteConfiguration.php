@@ -8,8 +8,8 @@ use League\Route\RouteCollectionInterface;
 
 class RouteConfiguration implements Configuration
 {
-    private $routeConfigPath;
-    private $router;
+    private string $routeConfigPath;
+    private RouteCollectionInterface $router;
 
     public function __construct(string $routeConfigPath, RouteCollectionInterface $router)
     {
