@@ -7,7 +7,7 @@ namespace Auth\Server;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-class RequestSender
+final class ResponseSender
 {
     public function send(ResponseInterface $response): void
     {
@@ -20,7 +20,7 @@ class RequestSender
     {
         header(
             sprintf(
-                "HTTP/%s %s %s",
+                'HTTP/%s %s %s',
                 $response->getProtocolVersion(),
                 $response->getStatusCode(),
                 $response->getReasonPhrase()
@@ -37,7 +37,7 @@ class RequestSender
         }
         foreach ($headers as $header => $values) {
             foreach ($values as $value) {
-                header(sprintf("%s: %s", $header, $value), false, $statusCode);
+                header(sprintf('%s: %s', $header, $value), false, $statusCode);
             }
         }
     }
