@@ -20,7 +20,7 @@ class ConsoleApplication
     {
         $this->application = new Application();
         $this->application->add($command);
-        $this->application->setDefaultCommand($command->getName(), true);
+        $this->application->setDefaultCommand((string) $command->getName(), true);
         $this->application->run();
     }
 }
