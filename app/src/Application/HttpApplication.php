@@ -14,11 +14,8 @@ use Throwable;
 
 class HttpApplication
 {
-    /** @var Router */
-    private $router;
-
-    /** @var ServerRequestCreatorInterface */
-    private $requestCreator;
+    private Router $router;
+    private ServerRequestCreatorInterface $requestCreator;
 
     public function __construct(Router $router, ServerRequestCreatorInterface $requestCreator)
     {
