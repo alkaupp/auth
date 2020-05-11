@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
 namespace Auth\Tests\Api;
 
 use ApiTester;
@@ -50,7 +52,7 @@ class SignInCest
             [
                 'userName' => $username,
                 'password' => $password,
-                'appId' => $appId
+                'appId' => $appId,
             ],
             JSON_THROW_ON_ERROR,
             512

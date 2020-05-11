@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
 namespace Auth\Tests\Api;
 
 use ApiTester;
@@ -69,7 +71,10 @@ class PasswordChangeCest
     {
         $app = $this->_createApp($I);
         $this->_createUser($I, $app);
-        $I->sendPOST('/changepassword', $this->_createRequestBody(self::USERNAME, 'invalid password', self::NEW_PASSWORD));
+        $I->sendPOST(
+            '/changepassword',
+            $this->_createRequestBody(self::USERNAME, 'invalid password', self::NEW_PASSWORD)
+        );
         $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED);
     }
     
@@ -77,7 +82,10 @@ class PasswordChangeCest
     {
         $app = $this->_createApp($I);
         $this->_createUser($I, $app);
-        $I->sendPOST('/changepassword', $this->_createRequestBody('unknown_user@example.com', self::PASSWORD, self::NEW_PASSWORD));
+        $I->sendPOST(
+            '/changepassword',
+            $this->_createRequestBody('unknown_user@example.com', self::PASSWORD, self::NEW_PASSWORD)
+        );
         $I->seeResponseCodeIs(HttpCode::NOT_FOUND);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
 namespace Auth\Tests\Api;
 
 use ApiTester;
@@ -59,7 +61,10 @@ class RegisterCest
     public function succeedInRegistering(ApiTester $I): void
     {
         $app = $this->_createApp($I);
-        $I->sendPOST('/register', $this->_createRequestBody(self::USERNAME, self::PASSWORD, $app->appId()->__toString()));
+        $I->sendPOST(
+            '/register',
+            $this->_createRequestBody(self::USERNAME, self::PASSWORD, $app->appId()->__toString())
+        );
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->removeUserByUsername(self::USERNAME);
     }
@@ -68,7 +73,10 @@ class RegisterCest
     {
         $app = $this->_createApp($I);
         $this->_createUser($I, $app);
-        $I->sendPOST('/register', $this->_createRequestBody(self::USERNAME, 'invalid password', $app->appId()->__toString()));
+        $I->sendPOST(
+            '/register',
+            $this->_createRequestBody(self::USERNAME, 'invalid password', $app->appId()->__toString())
+        );
         $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED);
     }
 
@@ -76,7 +84,10 @@ class RegisterCest
     {
         $app = $this->_createApp($I);
         $this->_createUser($I, $app);
-        $I->sendPOST('/register', $this->_createRequestBody('this is not an email', self::PASSWORD, $app->appId()->__toString()));
+        $I->sendPOST(
+            '/register',
+            $this->_createRequestBody('this is not an email', self::PASSWORD, $app->appId()->__toString())
+        );
         $I->seeResponseCodeIs(HttpCode::BAD_REQUEST);
     }
 
