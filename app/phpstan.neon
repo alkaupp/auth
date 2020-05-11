@@ -4,11 +4,5 @@ parameters:
   level: max
   paths: ["src", "tests"]
   excludes_analyse:
-    - tests/Codeception/_support/ApiTester.php
-    - tests/Codeception/_generated/ApiTesterActions.php
-    - tests/Codeception/ApiHelper.php
-    - tests/Api/SignInCest.php
-    - tests/Api/RegisterCest.php
-    - tests/Api/AuthorizeCest.php
-    - tests/Api/PasswordChangeCest.php
-    - tests/Api/FrontpageCest.php
+    - tests/Codeception/*
+    - tests/Api/*
